@@ -1,0 +1,67 @@
+/*
+ * Globals
+ */
+
+@media (min-width: 48em) {
+  html {
+    font-size: 18px;
+  }
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #555;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 400;
+  color: #333;
+}
+
+
+/*
+ * Override Bootstrap's default container.
+ */
+
+.container {
+  max-width: 60rem;
+}
+
+/*
+ * Blog name and description
+ */
+
+.blog-header {
+  padding-bottom: 1.25rem;
+  margin-bottom: 2rem;
+  border-bottom: .05rem solid #eee;
+}
+
+@media (min-width: 40em) {
+  .blog-title {
+    font-size: 2rem;
+  }
+}
+
+.raschasovka{
+  font-size: 0.8rem;
+}
+
+.raschasovka th,
+.raschasovka td {
+  padding: 0.3rem;
+}
+
+.schedule {
+  font-size: 0.85rem;
+}
+
+.schedule th,
+.schedule td {
+  padding: 0.4rem;
+}

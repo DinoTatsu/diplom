@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/personal-time.css">
+
+  <title>Зарезервированное время</title>
+</head>
+<body>
+
+  <header>
+    <!-- Здесь должна быть навигация -->
+    <div class="container-fluid">
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+          Расписание
+        </a>
+      </nav>
+    </div>
+    <!-- Описание страницы -->
+    <div class="blog-header">
+      <div class="container mr-5">
+        <p class="lead blog-description">Зарезервированное время преподавателя</p>
+        <h2 class="blog-title">Исаков Исак Исакович</h2>
+      </div>
+    </div>
+  </header>
+
+  <!-- Основное содежимое -->
+  <!-- mr-5 двигает вправо https://getbootstrap.com/docs/4.0/utilities/spacing/ -->
+  <div class="container mr-5">
+    <div class="row">
+      <div class="col-lg-9">
+        <!-- Таблица с личным временем !-->
+        <table class="table table-striped border">
+          <thead>
+            <tr>
+              <th>День недели</th>
+              <th>Время</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Понедельник</td>
+              <td>8.00 - 12.00</td>
+              <!-- Удалятор -->
+              <td>
+                <button type="button" class="btn btn-outline-danger btn-sm" type="submit" value="Submit">Удалить</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>Вторник</td>
+              <td>8.00 - 12.00</td>
+              <!-- Удалятор -->
+              <td>
+                <button type="button" class="btn btn-outline-danger btn-sm" type="submit" value="Submit">Удалить</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- Кнопка для открытия модального окна с формой -->
+    <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#personalTimeModal">
+      Добавить
+    </button>
+
+    <!-- Модальное окно с формой ввода личного времени -->
+    <div class="modal" id="personalTimeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Введите</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form>
+              <!-- Дни недели -->
+              <div class="form-group">
+                <label for="WeekDaySelect">День недели</label>
+                <select class="form-control" id="WeekDaySelect">
+                  <option>Понедельник</option>
+                  <option>Вторник</option>
+                  <option>Среда</option>
+                  <option>Четверг</option>
+                  <option>Пятница</option>
+                </select>
+              </div>
+              <!-- Время -->
+              <div class="form-group">
+                <label for="BeginTimeSelect">Начало</label>
+                <select class="form-control" id="BeginTimeSelect">
+                  <option>8.00</option>
+                  <option>9.30</option>
+                  <option>11.00</option>
+                  <option>13.00</option>
+                  <option>14.30</option>
+                  <option>16.00</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="EndTimeSelect">Конец</label>
+                <select class="form-control" id="EndTimeSelect">
+                  <option>9.20</option>
+                  <option>10.50</option>
+                  <option>12.20</option>
+                  <option>14.20</option>
+                  <option>15.50</option>
+                  <option>17.30</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary">Сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
