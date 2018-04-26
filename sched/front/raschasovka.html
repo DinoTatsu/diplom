@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/personal-time.css">
+
+  <title>Расчасовка</title>
+</head>
+<body>
+
+  <header>
+    <!-- Здесь должна быть навигация -->
+    <div class="container-fluid">
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+          Расписание
+        </a>
+      </nav>
+    </div>
+    <!-- Описание страницы -->
+    <div class="blog-header">
+      <div class="container mt-4"
+        <h2 class="blog-title">Расчасовка кафедры ПОКС</h2>
+      </div>
+    </div>
+  </header>
+
+  <!-- Основное содежимое -->
+  <!-- mr-5 двигает вправо https://getbootstrap.com/docs/4.0/utilities/spacing/ -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- Таблица с расчасовкой !-->
+        <table class="table table-responsive table-hover table-bordered raschasovka text-center">
+          <thead>
+            <tr>
+              <th rowspan="2">Номер потока</th>
+              <th rowspan="2">Курс</th>
+              <th rowspan="2">Группа</th>
+              <th rowspan="2">Количество студентов</th>
+              <th rowspan="2">Преподаватель</th>
+              <th rowspan="2">Дисциплина</th>
+              <th rowspan="2">Вид занятий</th>
+              <th rowspan="2">Аудитория</th>
+              <th rowspan="2">Количество часов за семестр</th>
+              <th colspan="16">График учебного процесса (Недели)</th>
+              <th rowspan="2" class="table-light"></th>
+            </tr>
+            <tr>
+              <th>№1</th>
+              <th>№2</th>
+              <th>№3</th>
+              <th>№4</th>
+              <th>№5</th>
+              <th>№6</th>
+              <th>№7</th>
+              <th>№8</th>
+              <th>№9</th>
+              <th>№10</th>
+              <th>№11</th>
+              <th>№12</th>
+              <th>№13</th>
+              <th>№14</th>
+              <th>№15</th>
+              <th>№16</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>20</td>
+              <td>4</td>
+              <td>ПИ-1-14</td>
+              <td>20</td>
+              <td>Раззаков Исхак Раззакович</td>
+              <td>Функциональное программирование</td>
+              <td>Лекции</td>
+              <td>1/305</td>
+              <td>64</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <!-- Удалятор -->
+              <td class="table-light">
+                <button type="button" class="btn btn-outline-danger btn-sm" type="submit" value="Submit">Удалить</button>
+              </td>
+            </tr>
+
+            <tr>
+              <td>20</td>
+              <td>4</td>
+              <td>ПИ-1-14</td>
+              <td>20</td>
+              <td>Раззаков Исхак Раззакович</td>
+              <td>Функциональное программирование</td>
+              <td>Лекции</td>
+              <td>1/305</td>
+              <td>64</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <td>2</td>
+              <!-- Удалятор -->
+              <td class="table-light">
+                <button type="button" class="btn btn-outline-danger btn-sm" type="submit" value="Submit">Удалить</button>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <!-- Кнопка для открытия модального окна с формой -->
+    <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#raschasovkaModal">
+      Добавить
+    </button>
+
+    <!-- Модальное окно с формой ввода личного времени -->
+    <div class="modal" id="raschasovkaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="raschasovkaModalLabel">Введите</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form>
+
+              <div class="form-group">
+                <label for="potok">Поток</label>
+                <input type="number" id="potok" min="1" class="form-control" placeholder="Поток">
+              </div>
+
+              <div class="form-group">
+                <label for="course">Курс</label>
+                <input type="number" id="course" min="1" max="6" class="form-control" placeholder="Курс">
+              </div>
+
+              <div class="form-group">
+                <label for="GroupSelect">Группа</label>
+                <select class="form-control" id="GroupSelect">
+                  <option>ПИ-1-14</option>
+                  <option>ИВТ-1-15</option>
+                  <option>ИБ-1-16</option>
+                  <option>УТС-1-17</option>
+                  <option>ПИ-1-15</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="numberOfStudents">Количество студентов</label>
+                <input type="number" id="numberOfStudents" min="1" class="form-control" placeholder="Количество студентов">
+              </div>
+
+              <div class="form-group">
+                <label for="teacherSelect">Преподаватель</label>
+                <select class="form-control" id="teacherSelect">
+                  <option>Исаков Исак Исакович</option>
+                  <option>Иванов Иван Иванович</option>
+                  <option>Ахмедов А.Т.</option>
+                  <option>Курманбекова К.Б.</option>
+                  <option>Ласунова Н.С.</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="subjectSelect">Предмет</label>
+                <select class="form-control" id="subjectSelect">
+                  <option>Программная инженерия</option>
+                  <option>Проектирование автоматизированных производственных систем </option>
+                  <option>Промышленные роботы и манипуляторы</option>
+                  <option>Конструирование и математическое моделирование</option>
+                  <option>Программные системы инженерного анализа </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="subjectTypeSelect">Тип занятий</label>
+                <select class="form-control" id="subjectTypeSelect">
+                  <option>Лекция</option>
+                  <option>Практика </option>
+                  <option>Лабораторная</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="auditoriumSelect">Аудитория</label>
+                <select class="form-control" id="auditoriumSelect">
+                  <option>1/152</option>
+                  <option>1/304</option>
+                  <option>1/305</option>
+                  <option>1/351</option>
+                  <option>1/320</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="totalHoursForSemestr">Количество часов за семестр</label>
+                <input type="number" id="totalHoursForSemestr" min="2" step="2" class="form-control" placeholder="Количество часов за семестр">
+              </div>
+
+              <div class="form-group">
+                <label for="weekSelect">Недели</label>
+                <select class="form-control" id="hoursPerWeekSelect">
+                  <option>Каждую неделю</option>
+                  <option>Числитель</option>
+                  <option>Знаменатель</option>
+                </select>
+                <button class="btn btn-outline-secondary float-center" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  Другое
+                </button><br>
+                <div class="collapse" id="collapseExample">
+                  <p>Номер недели</p>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№1">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№2">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№3">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№4">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№5">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№6">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№7">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№8">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№9">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№10">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№11">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№12">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№13">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№14">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№15">
+                    </div>
+                    <div class="col">
+                      <input type="text" class="form-control" placeholder="№16">
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary">Сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
