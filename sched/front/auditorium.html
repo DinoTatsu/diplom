@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% load static %}
+  <link rel="stylesheet" href="{% static "/css/bootstrap.min.css" %}">
+  <link rel="stylesheet" href="{% static "/css/personal-time.css" %}">
+
+  <title>Аудитории</title>
+</head>
+<body>
+
+  <header>
+    <!-- Здесь должна быть навигация -->
+    <div class="container-fluid">
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+          Расписание КГТУ
+        </a>
+      </nav>
+    </div>
+    <!-- Описание страницы -->
+    <div class="blog-header">
+      <div class="container mt-4">
+        <div class="col-6">
+          <h2 class="blog-title">Аудитории</h2>
+        </div>
+        <div class="col-6">
+          <!-- Кнопка для открытия модального окна с формой -->
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#auditoriumModal">
+            Добавить
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Основное содежимое -->
+  <!-- mr-5 двигает вправо https://getbootstrap.com/docs/4.0/utilities/spacing/ -->
+  <div class="container">
+    <div class="row">
+      <div class="col-5">
+{#        Вывод всех аудиторий#}
+        <div class="articles-container">
+        {% for auditorium in auditoriums %}
+          <div class="article border-bottom">
+            <a href="{{ auditorium.id }}" role="button">
+              Аудитория: {{ auditorium.name }}
+            </a>
+            <p>
+              {{ auditorium.auditoriumtypeid }}
+              {{ auditorium.buildingid }}
+            </p>
+          </div>
+        {% endfor %}
+        </div>
+
+{#        Пагинация#}
+        {% if auditoriums.has_other_pages %}
+          <ul class="pagination">
+            {% if auditoriums.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ auditoriums.previous_page_number }}">&laquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+              </li>
+            {% endif %}
+            {% for i in auditoriums.paginator.page_range %}
+              {% if auditoriums.number == i %}
+                <li class="page-item active">
+                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% if auditoriums.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ auditoriums.next_page_number }}">&raquo;</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span>&raquo;</span></li>
+            {% endif %}
+          </ul>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- Модальное окно с формой ввода аудитории -->
+    <div class="modal" id="auditoriumModal" tabindex="-1" role="dialog" aria-labelledby="auditoriumLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="auditoriumModalTitle">Введите</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <form>
+
+              <!-- Название аудитории -->
+              <div class="form-group">
+                <label for="inputName">Название аудитории</label>
+                <input type="text" class="form-control" id="inputName" placeholder="1/101" name="auditoriumName">
+              </div>
+
+              <!-- Тип аудитории -->
+              <div class="form-group">
+                <label for="auditoriumTypeSelect">Тип аудитории</label>
+                <select class="form-control" id="auditoriumTypeSelect">
+                  {% for type in types %}
+                    <option value="{{ type.id }}">{{ type.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <!-- Вместимость аудитории -->
+              <div class="form-group">
+                <label for="inputSeatingCapacity">Вместимость аудитории</label>
+                <input type="text" class="form-control" id="inputSeatingCapacity" placeholder="20" name="seatingCapacity">
+              </div>
+
+              <!-- Кафедра, к которой привязана аудитория -->
+              <div class="form-group">
+                <label for="auditoriumDepartmentSelect">Кафедра, к которой привязана аудитория</label>
+                <select class="form-control" id="auditoriumDepartmentSelect">
+                  {% for department in departments %}
+                    <option value="{{ department.id }}">{{ department.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+            <button type="button" class="btn btn-primary">Сохранить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+<script src="{% static "/js/jquery-3.2.1.min.js" %}"></script>
+<script src="{% static "/js/bootstrap.min.js" %}"></script>
+</body>
+</html>

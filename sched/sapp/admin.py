@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Auditorium, Auditoriumtype, Building, Course, Coursegroup, Dayofweek, Department, Faculty, Group, Hour, Raschasovka, Schedule, Subjecttype, Subject, Subjectwithtype, Teacher, Teacherpersonaltime, Week
+from .models import Auditorium, Auditoriumtype, Building, \
+    Course, Coursegroup, Dayofweek, Department, Faculty, Group, \
+    Hour, Raschasovka, Schedule, \
+    Subjecttype, Subject, Subjectwithtype, \
+    Teacher, Teacherpersonaltime, Week
 
 admin.site.register(Auditorium)
 admin.site.register(Auditoriumtype)

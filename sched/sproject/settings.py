@@ -78,10 +78,10 @@ DATABASES = {
     'default': {
         'NAME': 'ScheduleKSTU',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': 'ny',
+        'HOST': '206.189.24.237',
         'PORT': 1433,
-        'USER': 'fdb',
-        'PASSWORD': 'alonsy',
+        'USER': 'sa',
+        'PASSWORD': 'Alonsy12345',
     }
 
 }
@@ -129,3 +129,30 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'filedb': {
+#             'level': 'DEBUG',
+#             'class': 'logging.FileHandler',
+#             'filename': os.path.join(BASE_DIR, 'debugdb.log'),
+#         },
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['filedb'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#         'django': {
+#             'level': 'INFO',
+#             'handlers': ['console'],
+#         },
+#     },
+# }
