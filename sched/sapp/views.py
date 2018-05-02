@@ -14,13 +14,29 @@ def index(request):
 
 
 # url="teachertime", список преподавателей
-# url="teachertime/teacher_id", расчасовка конкретного преподавателя
-def teachertime(request, teacher_id=None):
-    # форма которая передается в контекст,
+# url="teachertime/department/teacher_id", преподаватели одной кафедры
+def teacher_time_list(request, department_id=None):
+    departments = Department.objects.all()
+    teachers = Teacher.objects.all().order_by('departmentid')
+    if department_id:
+        teachers = teachers.filter(departmentid=department_id)
     context = {
-
+        'departments': departments,
+        'teachers': teachers,
     }
-    return render(request, "personal_time", context)
+    return render(request, "teachers_time_list.html", context)
+
+
+# url="teachertime/teacher_id", преподаватель
+def teacher_time(request, teacher_id=None):
+    departments = Department.objects.all()
+    teacher = Teacher.objects.get(id=teacher_id)
+
+    context = {
+        'departments': departments,
+        'teacher': teacher,
+    }
+    return render(request, "teacher.html", context)
 
 
 # url="auditorium", все аудитории

@@ -12,8 +12,13 @@ urlpatterns = [
     url(r'^auditorium/building/(?P<building_id>[0-9]+)/$', views.auditorium_list, name="aud_build"),
     #  одна аудитория
     url(r'^auditorium/(?P<auditorium_id>[0-9]+)/$', views.auditorium, name="auditorium"),
+    # все преподаватели
+    url(r'^teachertime/$', views.teacher_time_list, name="teacher_time_list"),
+    # преподаватели одной кафедры
+    url(r'^teachertime/department/(?P<department_id>[0-9]+)/$', views.teacher_time_list, name="teacher_time_department"),
+    # расчасовка преподавателя
+    url(r'^teachertime/(?P<teacher_id>[0-9]+)/$', views.teacher_time, name="teacher_time"),
 
-    url(r'^teachertime/$', views.teachertime, name="teachertime"),
 
     # url(r'^$', views.index, name="index"),
 ]

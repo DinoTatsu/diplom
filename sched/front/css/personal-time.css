@@ -20,32 +20,7 @@ h4,
 h5,
 h6 {
   font-weight: 400;
-  color: #333;
-}
-
-
-/*
- * Override Bootstrap's default container.
- */
-
-.container {
-  max-width: 60rem;
-}
-
-/*
- * Blog name and description
- */
-
-.blog-header {
-  padding-bottom: 1.25rem;
-  margin-bottom: 2rem;
-  border-bottom: .05rem solid #eee;
-}
-
-@media (min-width: 40em) {
-  .blog-title {
-    font-size: 2rem;
-  }
+  color: #444;
 }
 
 .raschasovka{

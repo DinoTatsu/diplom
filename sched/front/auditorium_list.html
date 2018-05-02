@@ -7,15 +7,16 @@
   {% load static %}
   <link rel="stylesheet" href="{% static "/css/bootstrap.min.css" %}">
   <link rel="stylesheet" href="{% static "/css/personal-time.css" %}">
+  <link rel="stylesheet" href="{% static "/css/font-awesome.min.css" %}">
 
-  <title>Аудитория {{ auditorium.name }}</title>
+  <title>Аудитории</title>
 </head>
 
 <body>
   <header>
-      <!-- Здесь должна быть навигация -->
+    <!-- Здесь должна быть навигация -->
     <div class="container-fluid">
-      <nav class="navbar navbar-light bg-light">
+      <nav class="nav navbar-light bg-light">
         <a class="navbar-brand" href="{% url 'index' %}">Расписание КГТУ</a>
         <a class="nav-link" href="{% url 'index' %}">Главная</a>
         <a class="nav-link active" href="{% url 'auditorium_list' %}">Аудитории</a>
@@ -26,7 +27,7 @@
     <div class="container pt-2 mb-3">
       <div class="row border-bottom">
         <div class="col offset-md-3">
-          <h2>Аудитория {{ auditorium.name }}</h2>
+          <h2>Аудитории</h2>
         </div>
       </div>
     </div>
@@ -44,7 +45,7 @@
             <form role="search" class="visible-xs">
               <div class="form-group">
                 <div class="input-group">
-                  <input type="search" class="form-control" placeholder="1/111">
+                  <input type="search" class="form-control" placeholder="1/101">
                   <button class="btn btn-light" type="submit">
                       Найти
                   </button>
@@ -73,39 +74,13 @@
       </div>
 
       <div class="col-9">
-        <h3>{{ auditorium.name }}</h3>
-        <p>
-          <div class="row">
-          {% if auditorium.departmentid %}
-            <div class="col-3">Кафедра:</div>
-            <div class="col-6">{{ auditorium.departmentid.fullname }}({{ auditorium.departmentid.name }})</div>
-          {% endif %}
-          </div>
-        </p>
-        <p>
-          <div class="row">
-            {% if auditorium.seatingcapacity != 0 %}
-              <div class="col-3">Вместимость:</div>
-              <div class="col-6">{{ auditorium.seatingcapacity }}</div>
-            {% endif %}
-          </div>
-        </p>
-        <p>
-          <div class="row">
-          {% if auditorium.auditoriumtypeid %}
-	          <div class="col-3">Тип аудитории: </div>
-	          <div class="col-6">{{ auditorium.auditoriumtypeid.fullname }}</div>
-          {% endif %}
-          </div>
-        </p>
-        <p>
-        <div class="row">
-          {% if auditorium.buildingid %}
-	          <div class="col-3">Корпус: </div>
-	          <div class="col-6">{{ auditorium.buildingid }}</div>
-          {% endif %}
-        </div>
-        </p>
+        <ul>
+          {% for auditorium in auditoriums %}
+            <li>
+              <a href="{% url 'auditorium' auditorium.id %}">{{ auditorium.name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
       </div>
 
     </div>
