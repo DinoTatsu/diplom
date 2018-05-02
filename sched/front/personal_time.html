@@ -16,9 +16,9 @@
     <!-- Здесь должна быть навигация -->
     <div class="container-fluid">
       <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-          Расписание
-        </a>
+        <a class="navbar-brand" href="{% url 'index' %}">Расписание КГТУ</a>
+        <a class="nav-link" href="{% url 'index' %}">Главная</a>
+        <a class="nav-link active" href="{% url 'auditorium_list' %}">Аудитории</a>
       </nav>
     </div>
     <!-- Описание страницы -->

@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.views.generic import ListView
-
+from .forms import AuditoriumListForm
 from sapp.models import Auditorium, Auditoriumtype, Building, \
     Course, Coursegroup, Dayofweek, Department, Faculty, Group, \
     Hour, Raschasovka, Schedule, \
@@ -9,17 +8,68 @@ from sapp.models import Auditorium, Auditoriumtype, Building, \
     Teacher, Teacherpersonaltime, Week
 
 
-# url="index", main page with navigation
+# url="index", главная страница
 def index(request):
     return render(request, "index.html")
 
 
-def auditorium(request):
+# url="teachertime", список преподавателей
+# url="teachertime/teacher_id", расчасовка конкретного преподавателя
+def teachertime(request, teacher_id=None):
+    # форма которая передается в контекст,
+    context = {
+
+    }
+    return render(request, "personal_time", context)
+
+
+# url="auditorium", все аудитории
+# url="auditorium/building/<int>", аудитории корпуса
+def auditorium_list(request, building_id=None):
+    buildings = Building.objects.all()  # все корпуса(для навигации)
+    auditoriums = Auditorium.objects.all().order_by('buildingid') # все аудитории
+    auditoriums = auditoriums.exclude(seatingcapacity__lte=1) # исключить аудитории с вместимостью <= 1
+    if building_id:
+        auditoriums = auditoriums.filter(buildingid=building_id).order_by('name')  # аудитории одного корпуса
+    context = {
+        'buildings': buildings,
+        'auditoriums': auditoriums,
+    }
+    return render(request, "auditorium_list.html", context)
+
+
+
+# url="auditorium/<int>", конкретная аудитория
+def auditorium(request, auditorium_id):
+    auditorium = Auditorium.objects.get(id=auditorium_id)  # аудитория, соответствующая auditorium_id
+    buildings = Building.objects.all()  # все корпуса(для навигации)
+    context = {
+        'auditorium': auditorium,
+        'buildings': buildings,
+    }
+    return render(request, "auditorium.html", context)
+
+
+
+
+
+
+
+
+def auditorium2(request):
     departments = Department.objects.all()
     auditorium_types = Auditoriumtype.objects.all()
     buildings = Building.objects.all()
 
-    auditorium_list = Auditorium.objects.order_by('-auditoriumtypeid')
+    auditorium_list = Auditorium.objects.all()
+
+    auditorium_building = {}
+    for building in buildings:
+        x = Auditorium.objects.filter(buildingid=building.id)
+        if building not in auditorium_building:
+            auditorium_building[str(building.id)] = x
+        else:
+            auditorium_building[str(building.id)].append(x)
 
     paginator = Paginator(auditorium_list, 25) # Show 25 auditoriums per page
     page = request.GET.get('page')
@@ -38,4 +88,4 @@ def auditorium(request):
         "types": auditorium_types,
         "building": buildings,
     }
-    return render(request, "auditorium.html", context)
+    return render(request, "auditorium2.html", context)

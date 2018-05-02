@@ -75,15 +75,22 @@ WSGI_APPLICATION = 'sproject.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'NAME': 'ScheduleKSTU',
+    #     'ENGINE': 'sql_server.pyodbc',
+    #     'HOST': '206.189.24.237',
+    #     'PORT': 1433,
+    #     'USER': 'sa',
+    #     'PASSWORD': 'Alonsy12345',
+    # },
     'default': {
         'NAME': 'ScheduleKSTU',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': '206.189.24.237',
+        'HOST': 'ny',
         'PORT': 1433,
-        'USER': 'sa',
-        'PASSWORD': 'Alonsy12345',
+        'USER': 'fdb',
+        'PASSWORD': 'alonsy',
     }
-
 }
 
 
