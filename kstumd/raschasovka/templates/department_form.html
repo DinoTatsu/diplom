@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+
+{% block title %} Расчасовка {% endblock %}
+
+<!-- Навигация -->
+	{% block nav %}
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории</a>
+	  </li>
+	  <li class="nav-item">
+	      <a class="nav-link" href="{% url "department_list" %}">Расчасовки</a>
+	  </li>
+	{% endblock %}
+<!-- Навигация -->
+
+{% block content %}
+	<div class="container pb-2">
+		<div class="row cyan lighten-5 pb-2">
+			<div class="col-3 mt-1">
+				<a href="{% url 'department_list' %}" class="btn btn-default btn-block mt-1 mb-1" role="button">
+          Все кафедры
+        </a>
+			</div>
+
+			<div class="col-7 mt-2 white">
+				<form>
+					{% csrf_token %}
+
+          <!-- Название Кафедры -->
+          <div class="form-group">
+            <label for="inputName">Название Кафедры</label>
+            {{ form.name }}
+          </div>
+
+          <!-- Тип Кафедры -->
+          <div class="form-group">
+            <label for="auditoriumTypeSelect">Тип Кафедры</label>
+            {{ form.auditoriumtypeid }}
+          </div>
+
+          <!-- Вместимость Кафедры -->
+          <div class="form-group">
+            <label for="inputSeatingCapacity">Вместимость Кафедры</label>
+            {{ form.seatingcapacity }}
+          </div>
+
+          <!-- Кафедра, к которой привязана Расчасовка -->
+          <div class="form-group">
+            <label for="auditoriumDepartmentSelect">Кафедра, к которой привязана расчасовка</label>
+            {{ form.departmentid }}
+          </div>
+
+					<button type="submit" class="btn btn-info">Сохранить</button>
+
+				</form>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "_base.html" %}
+
+{% block title %} Аудитория {% endblock %}
+
+<!-- Навигация -->
+	{% block nav %}
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории </a>
+	  </li>
+	  <li class="nav-item">
+	      <a class="nav-link" href="{% url "department_list" %}"> Расчасовки </a>
+	  </li>
+	{% endblock %}
+<!-- Навигация -->
+
+{% block content %}
+	<div class="container pb-2">
+		<div class="row cyan lighten-5 pb-2">
+			<div class="col-3 mt-1">
+				<a href="{% url 'department_list' %}" class="btn btn-default btn-block mt-1 mb-1" role="button">
+          Все кафедры
+        </a>
+			</div>
+			<div class="col-7 mt-1">
+
+				<!-- Информация о кафедре -->
+				<div class="card white">
+					<div class="card-body rounded-bottom">
+				    <h4 class="card-title text-center">{{ department.name }}</h4>
+				    <hr class="hr-dark">
+						{% for r in raschas %}
+						<p>
+						 <!--           'potok',
+            'courseid',
+            'teacherid',
+            'totalhoursforsemestr',
+            'auditoriumid',
+            'subjectid',
+            'subjecttypeid',
+            'groupid',
+            'departmentid',
+            'semesterid'-->
+		          {{ r.potok }}
+							{{ r.courseid }}
+		        </p>
+						{% endfor %}
+				  </div>
+				</div>
+				<!-- Информация о кафедре -->
+				<form>
+			    {% csrf_token %}
+			    <!-- Название Кафедры -->
+					{{ form.as_table }}
+			    <input type="submit" value="Submit" />
+				</form>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "_base.html" %}
+
+{% block title %} Аудитория {% endblock %}
+
+<!-- Навигация -->
+	{% block nav %}
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории </a>
+	  </li>
+	  <li class="nav-item">
+	      <a class="nav-link" href="{% url "department_list" %}">Расчасовка</a>
+	  </li>
+	{% endblock %}
+<!-- Навигация -->
+
+{% block content %}
+	<div class="container pb-2">
+		<div class="row cyan lighten-5 pb-2">
+			<div class="col-3 mt-1">
+				<a href="{% url 'auditorium_list' %}" class="btn btn-default btn-block mt-1 mb-1" role="button">
+          Все аудитории
+        </a>
+				<!--Список корпусов-->
+				<div class="card mt-3">
+          <div class="card-header"> Корпус </div>
+          <div class="card-body">
+	          <ul class="list-group list-group-flush">
+	            {% for building in buildings %}
+	              <li class="list-group-item">
+	                <a href="{% url 'aud_build' building.id %}" role="button">
+	                  {{ building.fullname }}
+	                </a>
+	              </li>
+	            {% endfor %}
+	          </ul>
+          </div>
+        </div>
+				<!--Список корпусов-->
+
+			</div>
+			<div class="col-7 mt-2">
+
+				<!-- Информация об аудитории -->
+				<div class="card white">
+					<div class="card-body rounded-bottom">
+				    <h4 class="card-title text-center">{{ auditorium.name }}</h4>
+				    <hr class="hr-dark">
+						<p>
+		          <div class="row">
+		          {% if auditorium.departmentid %}
+		            <div class="col-3">Кафедра:</div>
+		            <div class="col-6">{{ auditorium.departmentid.fullname }}({{ auditorium.departmentid.name }})</div>
+		          {% endif %}
+		          </div>
+		        </p>
+		        <p>
+		          <div class="row">
+		            {% if auditorium.seatingcapacity != 0 %}
+		              <div class="col-3">Вместимость:</div>
+		              <div class="col-6">{{ auditorium.seatingcapacity }}</div>
+		            {% endif %}
+		          </div>
+		        </p>
+		        <p>
+		          <div class="row">
+		          {% if auditorium.auditoriumtypeid %}
+			          <div class="col-3">Тип аудитории: </div>
+			          <div class="col-6">{{ auditorium.auditoriumtypeid.fullname }}</div>
+		          {% endif %}
+		          </div>
+		        </p>
+		        <p>
+		        <div class="row">
+		          {% if auditorium.buildingid %}
+			          <div class="col-3">Корпус: </div>
+			          <div class="col-6">{{ auditorium.buildingid }}</div>
+		          {% endif %}
+		        </div>
+		        </p>
+
+								<a href="{% url "auditorium_edit" auditorium.id %}" class="btn btn-outline-blue" role="button">
+							    Редактировать
+						    </a> <a href="{% url "auditorium_delete" auditorium.id %}" class="btn btn-outline-danger mt-1 mb-1" role="button">
+	                Удалить
+                </a>
+
+				  </div>
+				</div>
+				<!-- Информация об аудитории -->
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

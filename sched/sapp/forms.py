@@ -13,4 +13,3 @@ from django.views.generic.edit import FormView
 class AuditoriumListForm(forms.Form):
     search = forms.CharField(required=False)
     sort_field = forms.ChoiceField(choices=(('id', 'ID'), ('title', 'title'), ('-created_date', 'Дата создания')), required=False)
-

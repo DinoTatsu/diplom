@@ -1,0 +1,148 @@
+{% extends "_base.html" %}
+
+{% block title %}Список аудиторий{% endblock %}
+
+<!-- Навигация -->
+	{% block nav %}
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории </a>
+	  </li>
+	  <li class="nav-item">
+	      <a class="nav-link" href="#">Расписание</a>
+	  </li>
+	{% endblock %}
+<!-- Навигация -->
+
+{% block content %}
+	<div class="container">
+		<div class="row cyan lighten-5 pb-2">
+			<div class="col-3 mt-1 d-none d-md-block d-lg-block">
+				<a href="{% url 'auditorium_list' %}" class="btn btn-default btn-block mt-1 mb-1" role="button">
+          Все аудитории
+        </a>
+				<!-- Поиск аудитории -->
+				<div class="card">
+          <div class="card-body">
+            <form role="search" class="visible-xs">
+	            <div class="md-form">
+		            <i class="fa fa-search prefix"></i>
+		            {{ form.search }}
+		            <label for="audSearch">Номер аудитории</label>
+		            <button class="btn btn-light ml-4" type="submit"> Поиск </button>
+	            </div>
+            </form>
+          </div>
+        </div>
+				<!-- Поиск аудитории -->
+
+				<!--Список корпусов-->
+				<div class="card mt-3">
+          <div class="card-header"> Корпус </div>
+          <div class="card-body">
+	          <ul class="list-group list-group-flush">
+	            {% for building in buildings %}
+	              <li class="list-group-item">
+	                <a href="{% url 'aud_build' building.id %}">
+	                  {{ building.fullname }}
+	                </a>
+	              </li>
+	            {% endfor %}
+	          </ul>
+          </div>
+        </div>
+				<!--Список корпусов-->
+
+			</div>
+			<div class="col-7 mt-2">
+				<!-- Список аудиторий -->
+				<div class="list-group white">
+					<!-- Пагинация -->
+					<nav>
+						{% if auditoriums.has_other_pages %}
+		          <ul class="pagination pg-blue white">
+		            {% if auditoriums.has_previous %}
+		              <li class="page-item">
+		                <a class="page-link" href="?page={{ auditoriums.previous_page_number }}">&laquo;</a>
+		              </li>
+		            {% else %}
+		              <li class="page-item disabled">
+		                <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+		              </li>
+		            {% endif %}
+		            {% for i in auditoriums.paginator.page_range %}
+		              {% if auditoriums.number == i %}
+		                <li class="page-item active">
+		                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+		                </li>
+		              {% else %}
+		                <li class="page-item">
+		                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+		                </li>
+		              {% endif %}
+		            {% endfor %}
+		            {% if auditoriums.has_next %}
+		              <li class="page-item">
+		                <a class="page-link" href="?page={{ auditoriums.next_page_number }}">&raquo;</a>
+		              </li>
+		            {% else %}
+		              <li class="page-item disabled"><span>&raquo;</span></li>
+		            {% endif %}
+		          </ul>
+		        {% endif %}
+						</nav>
+					<!-- Пагинация -->
+
+					{% for auditorium in auditoriums %}
+						<a href="{% url 'auditorium' auditorium.id %}" class="list-group-item waves-effect">
+							{{ auditorium.name }}  &nbsp;(
+							{% if auditorium.auditoriumtypeid %}
+	              {{ auditorium.auditoriumtypeid }}
+              {% endif %}
+							{% if auditorium.departmentid and auditorium.departmentid.name != '---' %}
+								, кафедра {{ auditorium.departmentid }}
+							{% endif %}
+							)
+						</a>
+					{% endfor %}
+
+					<!-- Пагинация -->
+					<nav>
+						{% if auditoriums.has_other_pages %}
+		          <ul class="pagination pg-blue white">
+		            {% if auditoriums.has_previous %}
+		              <li class="page-item">
+		                <a class="page-link" href="?page={{ auditoriums.previous_page_number }}">&laquo;</a>
+		              </li>
+		            {% else %}
+		              <li class="page-item disabled">
+		                <a class="page-link" href="#" tabindex="-1">&laquo;</a>
+		              </li>
+		            {% endif %}
+		            {% for i in auditoriums.paginator.page_range %}
+		              {% if auditoriums.number == i %}
+		                <li class="page-item active">
+		                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+		                </li>
+		              {% else %}
+		                <li class="page-item">
+		                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+		                </li>
+		              {% endif %}
+		            {% endfor %}
+		            {% if auditoriums.has_next %}
+		              <li class="page-item">
+		                <a class="page-link" href="?page={{ auditoriums.next_page_number }}">&raquo;</a>
+		              </li>
+		            {% else %}
+		              <li class="page-item disabled"><span>&raquo;</span></li>
+		            {% endif %}
+		          </ul>
+		        {% endif %}
+						</nav>
+					<!-- Пагинация -->
+				</div>
+				<!-- Список аудиторий -->
+			</div>
+		</div>
+	</div>
+{% endblock %}
