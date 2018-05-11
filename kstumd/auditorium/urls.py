@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^(?P<auditorium_id>[0-9]+)/$', views.auditorium, name="auditorium"),
 
     #  создать новую аудиторию
-    url(r'^new/$', views.auditorium_create, name='auditorium_new'),
+    # url(r'^new/$', views.auditorium_create, name='auditorium_new'),
 
     #  редактировать аудиторию
     url(r'^edit/(?P<auditorium_id>\d+)$', views.auditorium_update, name='auditorium_edit'),

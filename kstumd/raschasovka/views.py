@@ -1,29 +1,29 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .forms import DepartmentSearchForm, RaschasovkaForm
-from .models import Raschasovka, Teacher, Department
+from .models import Raschasovka, Teacher, Department, Group, Teacherdepartment
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
-def raschasovka_create(request):
-    form = RaschasovkaForm(request.POST or None)
+def raschasovka_create(request, department_id):
+    form = RaschasovkaForm(request.POST or None, initial={'departmentid': department_id})
     if form.is_valid():
         form.save()
-        return redirect('department_list')
+        return raschasovka_department(request, department_id)
     return render(request, 'raschasovka_form.html', {'form': form})
 
 
-def raschasovka_update(request, raschasovka_id):
+def raschasovka_update(request, raschasovka_id, department_id):
     raschasovka = get_object_or_404(Raschasovka, id=raschasovka_id)
-    form = RaschasovkaForm(request.POST or None, instance=raschasovka)
+    form = RaschasovkaForm(request.POST or None, instance=raschasovka, initial={'departmentid': raschasovka.departmentid})
     if form.is_valid():
         form.save()
-        return redirect('department_list')
+        return HttpResponseRedirect(reverse('r_department', args=(department_id,)))
     return render(request, 'raschasovka_form.html', {'form': form})
 
 
-def raschasovka_delete(request, raschasovka_id):
+def raschasovka_delete(request, raschasovka_id, department_id):
     raschasovka = get_object_or_404(Raschasovka, id=raschasovka_id)
     if request.method == 'POST':
         raschasovka.delete()
@@ -31,25 +31,18 @@ def raschasovka_delete(request, raschasovka_id):
     return render(request, 'raschasovka_confirm_delete.html', {'raschasovka': raschasovka})
 
 
-def raschasovka(request, department_id=1):
+def raschasovka_department(request, department_id=1):
     department = Department.objects.get(id=department_id)
     raschasovka_department = Raschasovka.objects.all().filter(departmentid=department_id)
-
-    form = RaschasovkaForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('department_list')
-
     context = {
         'department': department,
-        'raschas': raschasovka_department,
-        'form': 'form',
+        'raschas': raschasovka_department
     }
     return render(request, 'department.html', context)
 
 
-def raschas_list(request):
-    departments = Department.objects.all()
+def department_list(request):
+    departments = Department.objects.all() #.order_by('name')
 
     form = DepartmentSearchForm(request.GET)  # создать форму для поиска кафедры
     form.is_valid()

@@ -1,14 +1,14 @@
 {% extends "_base.html" %}
 
-{% block title %} Аудитория {% endblock %}
+{% block title %} Расчасовка {% endblock %}
 
 <!-- Навигация -->
 	{% block nav %}
-	  <li class="nav-item active">
+	  <li class="nav-item">
 	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории </a>
 	  </li>
-	  <li class="nav-item">
-	      <a class="nav-link" href="#">Расписание</a>
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "department_list" %}">Расчасовки </a>
 	  </li>
 	{% endblock %}
 <!-- Навигация -->
@@ -17,16 +17,14 @@
 	<div class="container pb-2">
 		<div class="row cyan lighten-5 pb-2">
 			<div class="col-3 mt-2">
-				<a href="{% url 'auditorium_list' %}" class="btn btn-default btn-block mt-1 mb-1" role="button">
-          Все аудитории
-        </a>
 
 			</div>
 			<div class="col-7 mt-1 white">
 
 				<form method="post" class="mb-3 mt-3">
+					{% csrf_token %}
 					<p class="text-danger">
-			      Вы хотите удалить аудиторию "{{ auditorium }}" ?
+			      Вы хотите удалить расчасовку "{{ raschasovka }}" ?
 					</p>
 			    <input type="submit" value="Удалить" class="btn btn-danger" />
 				</form>

@@ -1,0 +1,108 @@
+{% extends "_base.html" %}
+
+{% block title %} Расчасовка {% endblock %}
+
+<!-- Навигация -->
+	{% block nav %}
+	  <li class="nav-item">
+	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории</a>
+	  </li>
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "department_list" %}">Расчасовки</a>
+	  </li>
+	{% endblock %}
+<!-- Навигация -->
+
+{% block content %}
+	<div class="container pb-2">
+		<div class="row cyan lighten-5 pb-2 pt-1">
+			<div class="col-2"></div>
+			<div class="col-6 pt-2 ml-5 white">
+				<form method="post">
+					{% csrf_token %}
+
+					<!-- Поток -->
+					<div class="form-group">
+						<label for="input">Поток</label>
+						{{ form.potok }}
+					</div>
+					<!-- Поток -->
+
+					<!-- Курс -->
+					<div class="form-group">
+						<label for="input">Курс</label>
+						{{ form.courseid }}
+					</div>
+					<!-- Курс -->
+
+					<!-- Группа -->
+					<div class="form-group">
+						<label for="input">Группа</label>
+						{{ form.groupid }}
+					</div>
+					<!-- Группа -->
+
+					<!-- Количество студентов -->
+					<div class="form-group">
+						<label for="input">Количество студентов</label>
+						{{ form.numberofstudents }}
+					</div>
+					<!-- Количество студентов -->
+
+					<!-- Преподаватель -->
+					<div class="form-group">
+						<label for="input">Преподаватель</label>
+						{{ form.teacherid }}
+					</div>
+					<!-- Преподаватель -->
+            'auditoriumid',
+            'departmentid',
+            'semesterid',
+					<!-- Предмет -->
+					<div class="form-group">
+						<label for="input">Предмет</label>
+						{{ form.subjectid }}
+					</div>
+					<!-- Предмет -->
+
+					<!-- Тип предмета -->
+					<div class="form-group">
+						<label for="input">Тип предмета</label>
+						{{ form.subjecttypeid }}
+					</div>
+					<!-- Тип предмета -->
+
+					<!-- Всего часов на семестр -->
+					<div class="form-group">
+						<label for="input">Всего часов на семестр</label>
+						{{ form.totalhoursforsemestr }}
+					</div>
+					<!-- Всего часов на семестр -->
+
+					<!-- Аудитория -->
+					<div class="form-group">
+						<label for="input">Аудитория</label>
+						{{ form.auditoriumid }}
+					</div>
+					<!-- Аудитория -->
+
+					<!-- Семестр -->
+					<div class="form-group">
+						<label for="input">Семестр</label>
+						{{ form.semesterid }}
+					</div>
+					<!-- Семестр -->
+
+					<!-- Семестр -->
+					<div class="form-group">
+						{{ form.departmentid }}
+					</div>
+					<!-- Семестр -->
+
+					<button type="submit" class="btn btn-info">Сохранить</button>
+				</form>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

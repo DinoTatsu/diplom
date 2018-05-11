@@ -4,20 +4,14 @@ from .models import Auditorium, Building
 from .forms import AuditoriumForm, AuditoriumSearchForm
 
 
-def auditorium_create(request):
-    form = AuditoriumForm(request.POST or None)
-    if form.is_valid():
-        form.save()
-        return redirect('auditorium_list')
-    return render(request, 'auditorium_form.html', {'form': form})
-
-
 def auditorium_update(request, auditorium_id):
     auditorium = get_object_or_404(Auditorium, id=auditorium_id)
     form = AuditoriumForm(request.POST or None, instance=auditorium)
     if form.is_valid():
         form.save()
         return redirect('auditorium_list')
+    else:
+        print('sdjfnsdb')
     return render(request, 'auditorium_form.html', {'form': form})
 
 
