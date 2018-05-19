@@ -26,6 +26,9 @@ class Auditoriumtype(models.Model):
     name = models.CharField(db_column='Name', max_length=15, verbose_name="Сокращенное навзание")  # Field name made lowercase.
     fullname = models.CharField(db_column='FullName', max_length=50, verbose_name="Полное название")  # Field name made lowercase.
 
+    def __str__(self):
+        return self.fullname
+
     class Meta:
         managed = False
         db_table = 'AuditoriumType'
@@ -39,6 +42,9 @@ class Building(models.Model):
     number = models.SmallIntegerField(db_column='Number', blank=True, null=True, verbose_name="Номер корпуса")  # Field name made lowercase.
     location = models.BinaryField(db_column='Location', blank=True, null=True)  # Field name made lowercase.
     address = models.CharField(db_column='Address', max_length=100, blank=True, null=True, verbose_name="Адрес")  # Field name made lowercase.
+
+    def __str__(self):
+        return self.fullname
 
     class Meta:
         managed = False
@@ -66,11 +72,14 @@ class Coursegroup(models.Model):
     courseid = models.ForeignKey(Course, models.DO_NOTHING, db_column='CourseId')  # Field name made lowercase.
     groupid = models.ForeignKey('Group', models.DO_NOTHING, db_column='GroupId')  # Field name made lowercase.
 
+    def __str__(self):
+        return "Курс " + str(self.courseid.number) + ", группа" + self.groupid.name
+
     class Meta:
         managed = False
         db_table = 'CourseGroup'
-        verbose_name = "Курс группы"
-        verbose_name_plural = "Курс группы"
+        verbose_name = "Курс, группа"
+        verbose_name_plural = "Курс, группа"
 
 
 class Dayofweek(models.Model):
@@ -78,6 +87,9 @@ class Dayofweek(models.Model):
     number = models.SmallIntegerField(db_column='Number', verbose_name="Номер")  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=10, verbose_name="Кратко")  # Field name made lowercase.
     fullname = models.CharField(db_column='FullName', max_length=20, verbose_name="Полное навзание")  # Field name made lowercase.
+
+    def __str__(self):
+        return self.fullname
 
     class Meta:
         managed = False
@@ -93,7 +105,8 @@ class Department(models.Model):
     facultyid = models.ForeignKey('Faculty', models.DO_NOTHING, db_column='FacultyId', blank=True, null=True, verbose_name="Факультет")  # Field name made lowercase.
 
     def __str__(self):
-        return self.name
+        return self.name + "(" + self.fullname + ")"
+
     class Meta:
         managed = False
         db_table = 'Department'
@@ -105,6 +118,9 @@ class Faculty(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=100, verbose_name="Кратко")  # Field name made lowercase.
     fullname = models.CharField(db_column='FullName', max_length=100, verbose_name="Полное название")  # Field name made lowercase.
+
+    def __str__(self):
+        return self.name + "(" + self.fullname + ")"
 
     class Meta:
         managed = False
@@ -121,9 +137,11 @@ class Group(models.Model):
 
     def __str__(self):
         return self.name
+
     class Meta:
         managed = False
         db_table = 'Group'
+        ordering = ['name']
         verbose_name = "Группа"
         verbose_name_plural = "Группы"
 
@@ -133,6 +151,9 @@ class Hour(models.Model):
     begin = models.CharField(db_column='Begin', max_length=8, verbose_name="Начало")  # Field name made lowercase.
     end = models.CharField(db_column='End', max_length=8, verbose_name="Конец")  # Field name made lowercase.
     number = models.SmallIntegerField(db_column='Number', verbose_name="Номер")  # Field name made lowercase.
+
+    def __str__(self):
+        return "Пара "+str(self.number)+": "+str(self.begin)+" - "+str(self.end)
 
     class Meta:
         managed = False
@@ -156,7 +177,20 @@ class Raschasovka(models.Model):
     numberofstudents = models.SmallIntegerField(db_column='NumberOfStudents', verbose_name="Количество студентов")
 
     def __str__(self):
-        return self.departmentid.name
+        result = ""
+        if self.departmentid.name:
+            result += self.departmentid.name
+            result += ", "
+        if self.teacherid.lastname:
+            result += self.teacherid.lastname
+            result += ", "
+        if self.subjectid.name:
+            result += self.subjecttypeid.name
+            result += ", "
+        if self.groupid.name:
+            result += self.groupid.name
+        return result
+
     class Meta:
         managed = False
         db_table = 'Raschasovka'
@@ -168,12 +202,31 @@ class Raschasovkaweeks(models.Model):
     id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     raschasovkaid = models.ForeignKey(Raschasovka, models.DO_NOTHING, db_column='RaschasovkaId', verbose_name="Расчасовка")  # Field name made lowercase.
     weekid = models.ForeignKey('Week', models.DO_NOTHING, db_column='WeekId', verbose_name="Номер недели")  # Field name made lowercase.
+    hoursforweek = models.SmallIntegerField( db_column='HoursForWeek', verbose_name="Часов в неделю")  # Field name made lowercase.
 
     class Meta:
         managed = False
         db_table = 'RaschasovkaWeeks'
         verbose_name = "Неделя для расчасовка"
         verbose_name_plural = "Недели для расчасовки"
+
+class Raschasovkayears(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    potok = models.IntegerField(db_column='Potok')  # Field name made lowercase.
+    courseid = models.ForeignKey(Course, models.DO_NOTHING, db_column='CourseId')  # Field name made lowercase.
+    teacherid = models.ForeignKey('Teacher', models.DO_NOTHING, db_column='TeacherId')  # Field name made lowercase.
+    totalhoursforsemestr = models.SmallIntegerField(db_column='TotalHoursForSemestr')  # Field name made lowercase.
+    auditoriumid = models.ForeignKey(Auditorium, models.DO_NOTHING, db_column='AuditoriumId', blank=True, null=True)  # Field name made lowercase.
+    groupid = models.ForeignKey(Group, models.DO_NOTHING, db_column='GroupId')  # Field name made lowercase.
+    departmentid = models.ForeignKey(Department, models.DO_NOTHING, db_column='DepartmentId')  # Field name made lowercase.
+    semesterid = models.ForeignKey('Semesters', models.DO_NOTHING, db_column='SemesterId')  # Field name made lowercase.
+    subjectid = models.ForeignKey('Subject', models.DO_NOTHING, db_column='SubjectId')  # Field name made lowercase.
+    subjecttypeid = models.ForeignKey('Subjecttype', models.DO_NOTHING, db_column='SubjectTypeId')  # Field name made lowercase.
+    yearid = models.ForeignKey('Years', models.DO_NOTHING, db_column='YearId')  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'RaschasovkaYears'
 
 
 class Schedule(models.Model):
@@ -189,6 +242,9 @@ class Schedule(models.Model):
     subjectid = models.ForeignKey('Subject', models.DO_NOTHING, db_column='SubjectId', verbose_name="Предмет")  # Field name made lowercase.
     subjecttypeid = models.ForeignKey('Subjecttype', models.DO_NOTHING, db_column='SubjectTypeId', verbose_name="Тип предмета")  # Field name made lowercase.
     semesterid = models.ForeignKey('Semesters', models.DO_NOTHING, db_column='SemesterId', verbose_name="Семестр")  # Field name made lowercase.
+
+    def __str__(self):
+        return self.groupid.name +", "+ self.subjectid.name +", "+ self.subjecttypeid.name +", "+ self.teacherid.lastname +", "+ str(self.hourid.number) +", "+ str(self.hourid.begin)
 
     class Meta:
         managed = False
@@ -246,6 +302,7 @@ class Subject(models.Model):
     class Meta:
         managed = False
         db_table = 'Subject'
+        ordering = ['name']
         verbose_name = "Предмет"
         verbose_name_plural = "Предметы"
 
@@ -291,6 +348,7 @@ class Teacher(models.Model):
     class Meta:
         managed = False
         db_table = 'Teacher'
+        ordering = ['lastname']
         verbose_name = "Преподаватель"
         verbose_name_plural = "Преподаватели"
 
@@ -316,6 +374,9 @@ class Teacherpersonaltime(models.Model):
     hourid = models.ForeignKey(Hour, models.DO_NOTHING, db_column='HourId', verbose_name="Пара")  # Field name made lowercase.
     dayofweekid = models.ForeignKey(Dayofweek, models.DO_NOTHING, db_column='DayOfWeekId', verbose_name="День недели")  # Field name made lowercase.
 
+    def __str__(self):
+        return self.teacherid.lastname + ": " + self.dayofweekid.name + ", " + str(self.hourid.begin)
+
     class Meta:
         managed = False
         db_table = 'TeacherPersonalTime'
@@ -328,6 +389,12 @@ class Week(models.Model):
     number = models.SmallIntegerField(db_column='Number', verbose_name="Номер недели")  # Field name made lowercase.
     znamenatel = models.BooleanField(db_column='Znamenatel', verbose_name="Знаменатель?")  # Field name made lowercase.
 
+    def __str__(self):
+        if self.znamenatel:
+            return "Неделя " + str(self.number) + ", знаменатель"
+        else:
+            return "Неделя " + str(self.number) + ", числитель"
+
     class Meta:
         managed = False
         db_table = 'Week'
@@ -338,6 +405,9 @@ class Week(models.Model):
 class Years(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=10, verbose_name="Год")  # Field name made lowercase.
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         managed = False

@@ -1,34 +1,53 @@
-from django.forms import ModelForm, Form, CharField, forms
+from django.forms import ModelForm, Form, CharField
 from django import forms
-from django.urls import reverse_lazy as _
+from django.core.urlresolvers import reverse_lazy as _
+from .models import Raschasovka, Raschasovkaweeks, Group, \
+    Department, Teacherdepartment, Subjectdepartment, Teacher, Subject, Schedule, Week
 
-from .models import Auditorium
 
+class ScheduleForm(ModelForm):
 
-class AuditoriumForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ScheduleForm, self).__init__(*args, **kwargs)
+        try:
+            group_id = self.instance.groupid
+        except:
+            group_id = self.initial['groupid']
+        self.initial['weekid'] = Week.objects.first()
+        self.fields['teacherid'].queryset = Teacher.objects.all().filter(raschasovka__groupid=group_id)
+        self.fields['subjectid'].queryset = Subject.objects.all().filter(raschasovka__groupid=group_id)
+
     class Meta:
-        model = Auditorium
+        model = Schedule
         fields = [
-            'name', 'auditoriumtypeid', 'seatingcapacity', 'departmentid', 'buildingid'
+            'hourid', 'dayofweekid', 'groupid', 'teacherid', 'auditoriumid',
+            'weekid', 'subjectid', 'subjecttypeid', 'semesterid', 'lastchange', 'isfinal'
         ]
+
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'auditoriumtypeid': forms.Select(attrs={'class': 'form-control'}),
-            'seatingcapacity': forms.NumberInput(attrs={'class': 'form-control'}),
-            'departmentid': forms.Select(attrs={'class': 'form-control'}),
+            'isfinal': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'hourid': forms.Select(attrs={'class': 'form-control'}),
+            'dayofweekid': forms.Select(attrs={'class': 'form-control'}),
+            'teacherid': forms.Select(attrs={'class': 'form-control'}),
+            'auditoriumid': forms.Select(attrs={'class': 'form-control'}),
+            'weekid': forms.Select(attrs={'class': 'form-control'}),
+            'subjectid': forms.Select(attrs={'class': 'form-control'} ),
+            'subjecttypeid': forms.Select(attrs={'class': 'form-control'}),
+            'semesterid': forms.Select(attrs={'class': 'form-control'}),
+            'groupid': forms.HiddenInput(),
+            'lastchange': forms.HiddenInput(),
         }
 
     def save(self, commit=True):
-        auditorium = super(AuditoriumForm, self).save(commit=False)
-
-        # магия
+        schedule = super(ScheduleForm, self).save(commit=False)
+        # magic
         commit = True
         if commit:
-            auditorium.save()
-        return auditorium
+            schedule.save()
+        return schedule
 
-class AuditoriumSearchForm(Form):
+
+class GroupSearchForm(Form):
     search = CharField(required=False)
     search.widget.attrs['class'] ="form-control"
-    search.widget.attrs['id'] = "audSearch"
-
+    search.widget.attrs['id'] = "groupSearch"

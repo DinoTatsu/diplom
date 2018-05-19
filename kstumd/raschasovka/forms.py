@@ -13,13 +13,10 @@ class RaschasovkaForm(ModelForm):
             department_id = self.instance.departmentid
         except:
             department_id = self.initial['departmentid']
-        self.fields['teacherid'].queryset = Teacher.objects.all().filter(teacherdepartment__departmentid=department_id).order_by('lastname')
-        groups = Group.objects.all().order_by('name')
-        self.fields['groupid'].queryset = groups
-        self.fields['subjectid'].queryset = Subject.objects.filter(subjectdepartment__departmentid=department_id).order_by('name')
-        # except:
-        #     print('dfv')
-    #
+        self.fields['teacherid'].queryset = Teacher.objects.all().filter(teacherdepartment__departmentid=department_id)
+        self.fields['groupid'].queryset = Group.objects.all()
+        self.fields['subjectid'].queryset = Subject.objects.filter(subjectdepartment__departmentid=department_id)
+
     class Meta:
         model = Raschasovka
         fields = [

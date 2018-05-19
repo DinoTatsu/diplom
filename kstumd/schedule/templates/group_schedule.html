@@ -1,0 +1,57 @@
+{% extends "_base.html" %}
+
+{% block title %} Группа {{ group.name }} {% endblock %}
+
+<!-- Навигация -->
+	{% block nav %}
+	  <li class="nav-item">
+		  <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории </a>
+	  </li>
+	  <li class="nav-item">
+		  <a class="nav-link" href="{% url "department_list" %}">Расчасовки</a>
+	  </li>
+		<li class="nav-item active">
+			<a class="nav-link" href="#">Расписание</a>
+	  </li>
+	{% endblock %}
+<!-- Навигация -->
+
+{% block content %}
+	<div class="container grey lighten-5 pb-1">
+		<div class="row">
+			<div class="col white">
+				<h2>{{ group.name }}</h2>
+				<h5 class="d-inline">Количество студентов: {{ group.numberofstudents }}</h5>
+				<a href="{% url "schedule_new" group.id %}" class="btn btn-outline-red rounded font-weight-bold waves-effect d-inline float-right" role="button">Добавить</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="container-fluid pb-1">
+
+		<table class="table table-hover table-bordered text-center schedule">
+
+      <thead>
+        <tr>
+          <th></th>
+	        {% for day in days_of_week %}
+            <th>{{ day.fullname }}</th>
+	        {% endfor %}
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for hour in schedule_table.values %}
+	        <tr>
+		        {% for hour_day in hour.values %}
+			        <td onclick="location.href='{{ hour_day }}'">
+				        {{ hour_day }}
+			        </td>
+			      {% endfor %}
+	        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+	</div>
+{% endblock %}

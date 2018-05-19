@@ -48,7 +48,7 @@ def department_list(request):
     form.is_valid()
     if form.cleaned_data.get('search'):
         departments = departments.filter(name__icontains=form.cleaned_data['search'])  # найденные кафедры
-    #
+
     paginator = Paginator(departments, 20)  # 20 кафедр на страницу
     page = request.GET.get('page')
     try:
