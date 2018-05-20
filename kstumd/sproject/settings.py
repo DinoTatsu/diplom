@@ -25,7 +25,7 @@ SECRET_KEY = 'parampampam'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -77,22 +77,28 @@ WSGI_APPLICATION = 'sproject.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'NAME': 'ScheduleKSTU',
-    #     'ENGINE': 'sql_server.pyodbc',
-    #     'HOST': '206.189.24.237',
-    #     'PORT': 1433,
-    #     'USER': 'sa',
-    #     'PASSWORD': 'Alonsy12345',
-    # },
     'default': {
         'NAME': 'ScheduleKSTU',
         'ENGINE': 'sql_server.pyodbc',
-        'HOST': 'ny',
+        'HOST': '206.189.24.237',
         'PORT': 1433,
-        'USER': 'fdb',
-        'PASSWORD': 'alonsy',
-    }
+        'USER': 'sa',
+        'PASSWORD': 'Alonsy12345',
+        'OPTIONS': {
+            'unicode_results':True,
+            'driver': 'FreeTDS',
+            'host_is_server': True,
+            'extra_params': 'TDS_VERSION=8.0'
+        },
+    },
+    # 'default': {
+    #     'NAME': 'ScheduleKSTU',
+    #     'ENGINE': 'sql_server.pyodbc',
+    #     'HOST': 'ny',
+    #     'PORT': 1433,
+    #     'USER': 'fdb',
+    #     'PASSWORD': 'alonsy',
+    # }
 }
 
 
@@ -136,6 +142,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "assets"),
 ]
+STATIC_ROOT = "static"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
