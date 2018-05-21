@@ -4,11 +4,11 @@
 
 <!-- Навигация -->
 	{% block nav %}
-	  <li class="nav-item active">
-	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории </a>
-	  </li>
 	  <li class="nav-item">
-	      <a class="nav-link" href="department_list">Кафедра</a>
+	      <a class="nav-link" href="{% url "auditorium_list" %}"> Аудитории </a>
+	  </li>
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "department_list" %}"> Расчасовки </a>
 	  </li>
 	{% endblock %}
 <!-- Навигация -->
