@@ -12,12 +12,8 @@ def schedule_create(request, group_id):
         'weekid': Week.objects.get(number=1),
     }
     form = ScheduleForm(request.POST or None, initial=initial)
-    # print(form.as_p())
     if form.is_valid():
-        print( form.as_p() )
         form.save()
-        for field in form.fields:
-            print(field)
         return HttpResponseRedirect( reverse( 'group', args=(group_id,) ) )
     else:
         print(form.errors)
