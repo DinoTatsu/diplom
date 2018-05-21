@@ -19,7 +19,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'', include('main.urls')),
+    url(r'^$', include('main.urls')),
     url(r'^schedule/', include('schedule.urls')),
 
     url(r'^raschasovka/', include('raschasovka.urls')),
