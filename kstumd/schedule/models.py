@@ -235,9 +235,6 @@ class Schedule(models.Model):
     def __str__(self):
         return self.subjectid.name +", "+ self.subjecttypeid.name +", "+ self.teacherid.lastname
 
-    def for_table(self):
-        return self.teacherid.lastname+", "+self.subjectid.fullname+", "+self.subjecttypeid.name
-
     class Meta:
         managed = False
         db_table = 'Schedule'

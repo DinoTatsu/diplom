@@ -11,7 +11,7 @@
 		  <a class="nav-link" href="{% url "department_list" %}">Расчасовки</a>
 	  </li>
 		<li class="nav-item active">
-			<a class="nav-link" href="#">Расписание</a>
+			<a class="nav-link" href="{% url "group_list" %}">Расписание</a>
 	  </li>
 	{% endblock %}
 <!-- Навигация -->
@@ -44,9 +44,22 @@
         {% for hour in schedule_table.values %}
 	        <tr>
 		        {% for hour_day in hour.values %}
-			        <td onclick="location.href='{{ hour_day }}'">
+			        {% if forloop.first %}
+				        <td>
 				        {{ hour_day }}
-			        </td>
+				        </td>
+			        {% elif hour_day %}
+				        <td onclick="location.href='{% url "schedule_edit" group.id hour_day.id %}'">
+{#				        <td onclick="location.href='{{ hour_day.id }}'">#}
+					        {{ hour_day.auditoriumid }}
+				          {{ hour_day.teacherid.lastname }}
+				          {{ hour_day.teacherid.firstname }}
+				          {{ hour_day.subjectid.name }}
+				          {{ hour_day.subjecttypeid.name }}
+				        </td>
+			        {% else %}
+				        <td></td>
+			        {% endif %}
 			      {% endfor %}
 	        </tr>
         {% endfor %}

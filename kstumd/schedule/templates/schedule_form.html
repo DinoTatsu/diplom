@@ -7,8 +7,11 @@
 	  <li class="nav-item">
 	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории</a>
 	  </li>
-	  <li class="nav-item active">
+	  <li class="nav-item">
 	      <a class="nav-link" href="{% url "department_list" %}">Расчасовки</a>
+	  </li>
+		<li class="nav-item active">
+			<a class="nav-link" href="{% url "group_list" %}">Расписание</a>
 	  </li>
 	{% endblock %}
 <!-- Навигация -->
@@ -16,16 +19,26 @@
 {% block content %}
 	<div class="container pb-2">
 		<div class="row cyan lighten-5 pb-2 pt-1">
-			<div class="col-2"><a href="{% url "schedule_delete" group.id schedule.id %}" class="btn btn-sm btn-outline-danger" role="button"> Удалить </a></div>
+			<div class="col-2">
+
+			</div>
 			<div class="col-6 pt-2 ml-5 white">
+				<div class="border-bottom">
+				<h2 class="border-bottom">
+					<a href="{% url "group" group.id %}">{{ group.name }}</a>
+				</h2>
+				<p>Кафедра: {{ group.departmentid.name }}</p>
+				<p>Количество студентов: {{ group.numberofstudents }}</p>
+					</div>
+				<a href="{% url "schedule_delete" group.id schedule.id %}" class="btn btn-sm btn-outline-danger" role="button"> Удалить данное расписание       </a>
 				<form method="post">
 					{% csrf_token %}
-					<!-- Поток -->
+					<!-- Пара -->
 					<div class="form-group">
 						{{ form.hourid.label }}
 						{{ form.hourid }}
 					</div>
-					<!-- Поток -->
+					<!-- Пара -->
 
 					<!-- Курс -->
 					<div class="form-group">
@@ -33,13 +46,6 @@
 						{{ form.dayofweekid }}
 					</div>
 					<!-- Курс -->
-
-					<!-- Группа -->
-					<div class="form-group">
-						<label for="input">Группа</label>
-						{{ form.teacherid }}
-					</div>
-					<!-- Группа -->
 
 					<!-- Преподаватель -->
 					<div class="form-group">
@@ -62,13 +68,6 @@
 					</div>
 					<!-- Тип предмета -->
 
-					<!-- Всего часов на семестр -->
-					<div class="form-group">
-						<label for="input">Всего часов на семестр</label>
-						{{ form.isfinal }}
-					</div>
-					<!-- Всего часов на семестр -->
-
 					<!-- Аудитория -->
 					<div class="form-group">
 						<label for="input">Аудитория</label>
@@ -82,6 +81,13 @@
 						{{ form.semesterid }}
 					</div>
 					<!-- Семестр -->
+
+					<div class="form-check">
+						<label class="form-check-label">
+						{{ form.isfinal }}
+							Опубликовать
+						</label>
+					</div>
 
 					<!-- Семестр -->
 					<div class="form-group">

@@ -11,7 +11,11 @@ def schedule_create(request, group_id):
     if form.is_valid():
         form.save()
         return group(request, group_id)
-    return render(request, 'schedule_form.html', {'form': form})
+    context = {
+        'form': form,
+        'group': Group.objects.get(id=group_id)
+    }
+    return render(request, 'schedule_form.html', context)
 
 
 def schedule_update(request, schedule_id, group_id):
@@ -20,19 +24,28 @@ def schedule_update(request, schedule_id, group_id):
     if form.is_valid():
         form.save()
         return HttpResponseRedirect(reverse('group', args=(group_id,)))
-    return render(request, 'schedule_form.html', {'form': form})
+    context = {
+        'form': form,
+        'group': Group.objects.get(id=group_id),
+        'schedule': schedule,
+    }
+    return render(request, 'schedule_form.html', context)
 
 
-def schedule_delete(request, schedule_id, department_id):
+def schedule_delete(request, schedule_id, group_id):
     schedule = get_object_or_404(Schedule, id=schedule_id)
     if request.method == 'POST':
         schedule.delete()
         return redirect('department_list')
-    return render(request, 'schedule_confirm_delete.html', {'schedule': schedule})
+    context = {
+        'group': Group.objects.get(id=group_id),
+        'schedule': schedule,
+    }
+    return render(request, 'schedule_confirm_delete.html', context)
 
 
 #  расписание группы
-def group(request, group_id=1):
+def group(request, group_id):
     group = Group.objects.get(id=group_id)
     schedule_list = Schedule.objects.all().filter(groupid=group_id)
     hours = Hour.objects.all()
@@ -48,7 +61,7 @@ def group(request, group_id=1):
             schedule_table[hour][day] = []
             if schedule_for_day.filter(hourid=hour.id):
                 schedule = schedule_for_day.get(hourid=hour.id)  ## schedule for hour, day of week
-                schedule_table[hour][day] = schedule.for_table()
+                schedule_table[hour][day] = schedule
             else:
                 schedule_table[hour][day] = ""
     context = {

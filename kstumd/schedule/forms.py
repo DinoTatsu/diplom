@@ -25,7 +25,7 @@ class ScheduleForm(ModelForm):
         ]
 
         widgets = {
-            'isfinal': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'isfinal': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'hourid': forms.Select(attrs={'class': 'form-control'}),
             'dayofweekid': forms.Select(attrs={'class': 'form-control'}),
             'teacherid': forms.Select(attrs={'class': 'form-control'}),
