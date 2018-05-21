@@ -7,10 +7,20 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 def schedule_create(request, group_id):
-    form = ScheduleForm(request.POST or None, initial={'groupid': group_id})
+    initial = {
+        'groupid': group_id,
+        'weekid': Week.objects.get(number=1),
+    }
+    form = ScheduleForm(request.POST or None, initial=initial)
+    # print(form.as_p())
     if form.is_valid():
+        print( form.as_p() )
         form.save()
-        return group(request, group_id)
+        for field in form.fields:
+            print(field)
+        return HttpResponseRedirect( reverse( 'group', args=(group_id,) ) )
+    else:
+        print(form.errors)
     context = {
         'form': form,
         'group': Group.objects.get(id=group_id)
@@ -36,7 +46,7 @@ def schedule_delete(request, schedule_id, group_id):
     schedule = get_object_or_404(Schedule, id=schedule_id)
     if request.method == 'POST':
         schedule.delete()
-        return redirect('department_list')
+        return HttpResponseRedirect( reverse( 'group', args=(group_id,) ) )
     context = {
         'group': Group.objects.get(id=group_id),
         'schedule': schedule,

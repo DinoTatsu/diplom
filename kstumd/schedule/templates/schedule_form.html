@@ -24,13 +24,18 @@
 			</div>
 			<div class="col-6 pt-2 ml-5 white">
 				<div class="border-bottom">
-				<h2 class="border-bottom">
+				<h2>
 					<a href="{% url "group" group.id %}">{{ group.name }}</a>
 				</h2>
 				<p>Кафедра: {{ group.departmentid.name }}</p>
 				<p>Количество студентов: {{ group.numberofstudents }}</p>
-					</div>
-				<a href="{% url "schedule_delete" group.id schedule.id %}" class="btn btn-sm btn-outline-danger" role="button"> Удалить данное расписание       </a>
+				</div>
+
+				{% if schedule %}
+					<a href="{% url "schedule_delete" group.id schedule.id %}" class="btn btn-sm btn-outline-danger" role="button">
+						Удалить данное расписание
+					</a>
+				{% endif %}
 				<form method="post">
 					{% csrf_token %}
 					<!-- Пара -->
@@ -92,6 +97,12 @@
 					<!-- Семестр -->
 					<div class="form-group">
 						{{ form.groupid }}
+					</div>
+					<!-- Семестр -->
+
+					<!-- Семестр -->
+					<div class="form-group">
+						{{ form.weekid }}
 					</div>
 					<!-- Семестр -->
 

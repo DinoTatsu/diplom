@@ -13,7 +13,6 @@ class ScheduleForm(ModelForm):
             group_id = self.instance.groupid
         except:
             group_id = self.initial['groupid']
-        self.initial['weekid'] = Week.objects.first()
         self.fields['teacherid'].queryset = Teacher.objects.all().filter(raschasovka__groupid=group_id)
         self.fields['subjectid'].queryset = Subject.objects.all().filter(raschasovka__groupid=group_id)
 
@@ -30,10 +29,11 @@ class ScheduleForm(ModelForm):
             'dayofweekid': forms.Select(attrs={'class': 'form-control'}),
             'teacherid': forms.Select(attrs={'class': 'form-control'}),
             'auditoriumid': forms.Select(attrs={'class': 'form-control'}),
-            'weekid': forms.Select(attrs={'class': 'form-control'}),
             'subjectid': forms.Select(attrs={'class': 'form-control'} ),
             'subjecttypeid': forms.Select(attrs={'class': 'form-control'}),
             'semesterid': forms.Select(attrs={'class': 'form-control'}),
+            # 'weekid': forms.Select( attrs={'class': 'form-control'} ),
+            'weekid': forms.HiddenInput(),
             'groupid': forms.HiddenInput(),
             'lastchange': forms.HiddenInput(),
         }

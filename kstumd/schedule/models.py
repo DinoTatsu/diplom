@@ -154,7 +154,7 @@ class Hour(models.Model):
     number = models.SmallIntegerField(db_column='Number', verbose_name="Номер")  # Field name made lowercase.
 
     def __str__(self):
-        return "Пара "+str(self.number)+": "+str(self.begin)+" - "+str(self.end)
+        return "Пара "+str(self.number)+": "+str(self.begin) ## +" - "+str(self.end)
 
     class Meta:
         managed = False

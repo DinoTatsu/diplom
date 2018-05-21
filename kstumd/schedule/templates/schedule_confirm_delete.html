@@ -24,10 +24,10 @@
 			</div>
 			<div class="col-7 mt-1 white">
 
-				<form method="post" class="mb-3 mt-3">
+				<form method="post" class="mb-3 mt-3" action="{% url "schedule_delete" group.id schedule.id %}">
 					{% csrf_token %}
 					<p class="text-danger">
-			      Вы хотите удалить расчасовку "{{ raschasovka }}" ?
+			      Вы хотите удалить расписание {{ schedule }} ?
 					</p>
 			    <input type="submit" value="Удалить" class="btn btn-danger" />
 				</form>
