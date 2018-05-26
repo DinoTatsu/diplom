@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+
+{% block title %} Расчасовка {% endblock %}
+
+<!-- Навигация -->
+	{% block nav %}
+	  <li class="nav-item">
+	      <a class="nav-link" href="{% url "auditorium_list" %}">Аудитории</a>
+	  </li>
+	  <li class="nav-item active">
+	      <a class="nav-link" href="{% url "department_list" %}">Расчасовки</a>
+	  </li>
+		<li class="nav-item">
+			<a class="nav-link" href="{% url "group_list" %}">Расписание</a>
+	  </li>
+	{% endblock %}
+<!-- Навигация -->
+
+{% block content %}
+	<div class="container pb-2">
+		<div class="row cyan lighten-5 pb-2 pt-1">
+			<div class="col-2"></div>
+			<div class="col-6 pt-2 ml-5 white">
+				<form method="post">
+					{% csrf_token %}
+						<table>
+						{% for form in formset %}
+							{{ form }}
+						{% endfor %}
+						</table>
+					<button type="submit" class="btn btn-info">Сохранить</button>
+				</form>
+
+			</div>
+		</div>
+	</div>
+{% endblock %}

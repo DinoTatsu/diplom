@@ -18,88 +18,41 @@
 
 {% block content %}
 	<div class="container pb-2">
+		<div class="row pb-2 mb-2 pt-1">
+			<div class="col-2"></div>
+			<div class="col-6 pt-2 mb-2 ml-5 white z-depth-2">
+				<table>
+					<tr>
+						<td>Кафедра:</td>
+						<td>{{ raschasovka.departmentid.fullname }}</td>
+					</tr>
+					<tr>
+						<td>Группа:</td>
+						<td>{{ raschasovka.groupid.name }}</td>
+					</tr>
+					<tr>
+						<td>Предмет:</td>
+						<td>{{ raschasovka.subjectid }}</td>
+					</tr>
+					<tr>
+						<td>Тип учебного занятия:</td>
+						<td>{{ raschasovka.subjecttypeid }}</td>
+					</tr>
+
+				</table>
+				{% if raschasovka %}
+					<a href="{% url "raschasovka_delete" department_id raschasovka.id %}" class="btn btn-sm btn-outline-danger" role="button">
+						Удалить данную расчасовку
+					</a>
+				{% endif %}
+			</div>
+		</div>
 		<div class="row cyan lighten-5 pb-2 pt-1">
 			<div class="col-2"></div>
-			<div class="col-6 pt-2 ml-5 white">
+			<div class="col-6 pt-2 ml-5 white z-depth-1">
 				<form method="post">
 					{% csrf_token %}
-
-					<!-- Поток -->
-					<div class="form-group">
-						<label for="input">Поток</label>
-						{{ form.potok }}
-					</div>
-					<!-- Поток -->
-
-					<!-- Курс -->
-					<div class="form-group">
-						<label for="input">Курс</label>
-						{{ form.courseid }}
-					</div>
-					<!-- Курс -->
-
-					<!-- Группа -->
-					<div class="form-group">
-						<label for="input">Группа</label>
-						{{ form.groupid }}
-					</div>
-					<!-- Группа -->
-
-					<!-- Количество студентов -->
-					<div class="form-group">
-						<label for="input">Количество студентов</label>
-						{{ form.numberofstudents }}
-					</div>
-					<!-- Количество студентов -->
-
-					<!-- Преподаватель -->
-					<div class="form-group">
-						<label for="input">Преподаватель</label>
-						{{ form.teacherid }}
-					</div>
-					<!-- Преподаватель -->
-
-					<!-- Предмет -->
-					<div class="form-group">
-						<label for="input">Предмет</label>
-						{{ form.subjectid }}
-					</div>
-					<!-- Предмет -->
-
-					<!-- Тип предмета -->
-					<div class="form-group">
-						<label for="input">Тип предмета</label>
-						{{ form.subjecttypeid }}
-					</div>
-					<!-- Тип предмета -->
-
-					<!-- Всего часов на семестр -->
-					<div class="form-group">
-						<label for="input">Всего часов на семестр</label>
-						{{ form.totalhoursforsemestr }}
-					</div>
-					<!-- Всего часов на семестр -->
-
-					<!-- Аудитория -->
-					<div class="form-group">
-						<label for="input">Аудитория</label>
-						{{ form.auditoriumid }}
-					</div>
-					<!-- Аудитория -->
-
-					<!-- Семестр -->
-					<div class="form-group">
-						<label for="input">Семестр</label>
-						{{ form.semesterid }}
-					</div>
-					<!-- Семестр -->
-
-					<!-- Семестр -->
-					<div class="form-group">
-						{{ form.departmentid }}
-					</div>
-					<!-- Семестр -->
-
+						{{ form.as_p }}
 					<button type="submit" class="btn btn-info">Сохранить</button>
 				</form>
 

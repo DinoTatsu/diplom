@@ -1,8 +1,15 @@
-from django.forms import ModelForm, Form, CharField
+from django.forms import ModelForm, Form, CharField, inlineformset_factory, formset_factory
 from django import forms
 from django.core.urlresolvers import reverse_lazy as _
 from .models import Raschasovka, Raschasovkaweeks, Group, \
-    Department, Teacherdepartment, Subjectdepartment, Teacher, Subject
+    Department, Teacherdepartment, Subjectdepartment, Teacher, Subject, Week, amount_of_weeks
+
+
+RaschasovkaWeekFormSet = inlineformset_factory(parent_model=Raschasovka,
+                                               model=Raschasovkaweeks,
+                                               fk_name='raschasovkaid',
+                                               fields=('raschasovkaid', 'weekid', 'hoursforweek',),
+                                               extra=amount_of_weeks)
 
 
 class RaschasovkaForm(ModelForm):
@@ -22,7 +29,7 @@ class RaschasovkaForm(ModelForm):
         fields = [
             'potok', 'courseid', 'teacherid', 'totalhoursforsemestr',
             'auditoriumid', 'subjectid', 'subjecttypeid', 'groupid',
-            'departmentid', 'semesterid', 'numberofstudents',
+            'departmentid', 'semesterid', 'numberofstudents', 'subjectclassid'
         ]
 
         widgets = {
@@ -36,15 +43,13 @@ class RaschasovkaForm(ModelForm):
             'totalhoursforsemestr': forms.NumberInput(attrs={'class': 'form-control'}),
             'auditoriumid': forms.Select(attrs={'class': 'form-control'}),
             'semesterid': forms.Select(attrs={'class': 'form-control'}),
+            'subjectclassid': forms.Select(attrs={'class': 'form-control'}),
             'departmentid': forms.HiddenInput(),
         }
 
     def save(self, commit=True):
         raschasovka = super(RaschasovkaForm, self).save(commit=False)
-        # magic
-        commit = True
-        if commit:
-            raschasovka.save()
+        raschasovka.save()
         return raschasovka
 
 

@@ -1,13 +1,15 @@
 from django.db import models
 
+amount_of_weeks = 16
+
 
 class Auditorium(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    number = models.SmallIntegerField(db_column='Number', blank=True, null=True)  # Field name made lowercase.
+    number = models.SmallIntegerField(db_column='Number', blank=True, null=True, verbose_name="Номер")  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=100, verbose_name="Название")  # Field name made lowercase.
     departmentid = models.ForeignKey('Department', models.DO_NOTHING, db_column='DepartmentId', blank=True, null=True, verbose_name="Кафедра")  # Field name made lowercase.
     seatingcapacity = models.SmallIntegerField(db_column='SeatingCapacity', verbose_name="Вместимость")  # Field name made lowercase.
-    auditoriumtypeid = models.ForeignKey('Auditoriumtype', models.DO_NOTHING, db_column='AuditoriumTypeId', blank=True, null=True, verbose_name="Тип аудитории")  # Field name made lowercase.
+    auditoriumtypeid = models.ForeignKey('Auditoriumtype', models.DO_NOTHING, db_column='AuditoriumTypeId', verbose_name="Тип аудитории")  # Field name made lowercase.
     buildingid = models.ForeignKey('Building', models.DO_NOTHING, db_column='BuildingId', blank=True, null=True, verbose_name="Корпус")  # Field name made lowercase.
     location = models.BinaryField(db_column='Location', blank=True, null=True)  # Field name made lowercase.
 
@@ -19,6 +21,18 @@ class Auditorium(models.Model):
         db_table = 'Auditorium'
         verbose_name = "Аудитория"
         verbose_name_plural = "Аудитории"
+
+
+class Auditoriumsubjecttypes(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    auditoriumtypeid = models.ForeignKey('Auditoriumtype', models.DO_NOTHING, db_column='AuditoriumTypeId', verbose_name="Тип аудитории")  # Field name made lowercase.
+    subjecttypeid = models.ForeignKey('Subjecttype', models.DO_NOTHING, db_column='SubjectTypeId', verbose_name="Тип учебных занятий")  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'AuditoriumSubjectTypes'
+        verbose_name = "Тип занятий, тип аудитории"
+        verbose_name_plural = "Связь аудитории и типа учебных занятий"
 
 
 class Auditoriumtype(models.Model):
@@ -69,8 +83,8 @@ class Course(models.Model):
 
 class Coursegroup(models.Model):
     id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    courseid = models.ForeignKey(Course, models.DO_NOTHING, db_column='CourseId')  # Field name made lowercase.
-    groupid = models.ForeignKey('Group', models.DO_NOTHING, db_column='GroupId')  # Field name made lowercase.
+    courseid = models.ForeignKey(Course, models.DO_NOTHING, db_column='CourseId', verbose_name="Курс")  # Field name made lowercase.
+    groupid = models.ForeignKey('Group', models.DO_NOTHING, db_column='GroupId', verbose_name="Группа")  # Field name made lowercase.
 
     def __str__(self):
         return "Курс " + str(self.courseid.number) + ", группа" + self.groupid.name
@@ -79,7 +93,7 @@ class Coursegroup(models.Model):
         managed = False
         db_table = 'CourseGroup'
         verbose_name = "Курс, группа"
-        verbose_name_plural = "Курс, группа"
+        verbose_name_plural = "Связь курса и группы"
 
 
 class Dayofweek(models.Model):
@@ -110,6 +124,7 @@ class Department(models.Model):
     class Meta:
         managed = False
         db_table = 'Department'
+        ordering = ['name', ]
         verbose_name = "Кафедра"
         verbose_name_plural = "Кафедры"
 
@@ -141,7 +156,7 @@ class Group(models.Model):
     class Meta:
         managed = False
         db_table = 'Group'
-        ordering = ['name']
+        ordering = ['name',]
         verbose_name = "Группа"
         verbose_name_plural = "Группы"
 
@@ -164,31 +179,29 @@ class Hour(models.Model):
 
 class Raschasovka(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    potok = models.IntegerField(db_column='Potok', verbose_name="Поток")  # Field name made lowercase.
+    potok = models.IntegerField(db_column='Potok', blank=True, null=True, verbose_name="Поток")  # Field name made lowercase.
     courseid = models.ForeignKey(Course, models.DO_NOTHING, db_column='CourseId', verbose_name="Курс")  # Field name made lowercase.
     teacherid = models.ForeignKey('Teacher', models.DO_NOTHING, db_column='TeacherId', verbose_name="Преподаватель")  # Field name made lowercase.
-    totalhoursforsemestr = models.SmallIntegerField(db_column='TotalHoursForSemestr', verbose_name="Всего часов за семестр")  # Field name made lowercase.
+    totalhoursforsemestr = models.SmallIntegerField(db_column='TotalHoursForSemestr', verbose_name="Количество часов в семестре")  # Field name made lowercase.
     auditoriumid = models.ForeignKey(Auditorium, models.DO_NOTHING, db_column='AuditoriumId', blank=True, null=True, verbose_name="Аудитория")  # Field name made lowercase.
     groupid = models.ForeignKey(Group, models.DO_NOTHING, db_column='GroupId', verbose_name="Группа")  # Field name made lowercase.
     departmentid = models.ForeignKey(Department, models.DO_NOTHING, db_column='DepartmentId', verbose_name="Кафедра")  # Field name made lowercase.
     semesterid = models.ForeignKey('Semesters', models.DO_NOTHING, db_column='SemesterId', verbose_name="Семестр")  # Field name made lowercase.
     subjectid = models.ForeignKey('Subject', models.DO_NOTHING, db_column='SubjectId', verbose_name="Предмет")  # Field name made lowercase.
-    subjecttypeid = models.ForeignKey('Subjecttype', models.DO_NOTHING, db_column='SubjectTypeId', verbose_name="Тип предмета")  # Field name made lowercase.
-    numberofstudents = models.SmallIntegerField(db_column='NumberOfStudents', verbose_name="Количество студентов")
+    subjecttypeid = models.ForeignKey('Subjecttype', models.DO_NOTHING, db_column='SubjectTypeId', verbose_name="Тип учебного занятия")  # Field name made lowercase.
+    numberofstudents = models.SmallIntegerField(db_column='NumberOfStudents', verbose_name="Количество студентов")  # Field name made lowercase.
+    subjectclassid = models.ForeignKey('Subjectclass', models.DO_NOTHING, db_column='SubjectClassId', verbose_name="Тип предмета(КПВ и т.п.)")  # Field name made lowercase.
 
     def __str__(self):
         result = ""
-        if self.departmentid.name:
-            result += self.departmentid.name
-            result += ", "
-        if self.teacherid.lastname:
-            result += self.teacherid.lastname
-            result += ", "
+        if self.subjecttypeid.name:
+            result += self.subjecttypeid.name + ". "
         if self.subjectid.name:
-            result += self.subjecttypeid.name
-            result += ", "
-        if self.groupid.name:
-            result += self.groupid.name
+            result += self.subjectid.name + ", "
+        elif self.subjectid.fullname:
+            result += self.subjectid.fullname + ", "
+        if self.teacherid.firstname:
+            result += self.teacherid.lastname
         return result
 
     class Meta:
@@ -204,11 +217,19 @@ class Raschasovkaweeks(models.Model):
     weekid = models.ForeignKey('Week', models.DO_NOTHING, db_column='WeekId', verbose_name="Номер недели")  # Field name made lowercase.
     hoursforweek = models.SmallIntegerField( db_column='HoursForWeek', verbose_name="Часов в неделю")  # Field name made lowercase.
 
+    def __str__(self):
+        result = ""
+        if self.raschasovkaid:
+            result += str(self.raschasovkaid) + ". "
+        result += " "+str(self.weekid)
+        return result
+
     class Meta:
         managed = False
         db_table = 'RaschasovkaWeeks'
-        verbose_name = "Неделя для расчасовка"
-        verbose_name_plural = "Недели для расчасовки"
+        verbose_name = "Расчасовка, неделя"
+        verbose_name_plural = "Связь расчасовки с неделей"
+
 
 class Raschasovkayears(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
@@ -231,14 +252,13 @@ class Raschasovkayears(models.Model):
 
 class Schedule(models.Model):
     id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
-    hourid = models.ForeignKey(Hour, models.DO_NOTHING, db_column='HourId', verbose_name="Номер пары")  # Field name made lowercase.
+    hourid = models.ForeignKey(Hour, models.DO_NOTHING, db_column='HourId', verbose_name="Пара")  # Field name made lowercase.
     dayofweekid = models.ForeignKey(Dayofweek, models.DO_NOTHING, db_column='DayOfWeekId', verbose_name="День недели")  # Field name made lowercase.
     groupid = models.ForeignKey(Group, models.DO_NOTHING, db_column='GroupId', verbose_name="Группа")  # Field name made lowercase.
     teacherid = models.ForeignKey('Teacher', models.DO_NOTHING, db_column='TeacherId', verbose_name="Преподаватель")  # Field name made lowercase.
-    auditoriumid = models.ForeignKey(Auditorium, models.DO_NOTHING, db_column='AuditoriumId', verbose_name="Аудитория")  # Field name made lowercase.
-    weekid = models.ForeignKey('Week', models.DO_NOTHING, db_column='WeekId', verbose_name="Номер недели")  # Field name made lowercase.
-    lastchange = models.DateTimeField(db_column='LastChange', blank=True, null=True)  # Field name made lowercase.
-    isfinal = models.NullBooleanField(db_column='IsFinal')  # Field name made lowercase.
+    auditoriumid = models.ForeignKey(Auditorium, models.DO_NOTHING, db_column='AuditoriumId', verbose_name="Аудитории")  # Field name made lowercase.
+    lastchange = models.DateTimeField(db_column='LastChange', blank=True, null=True, verbose_name="Дата последнего изменения")  # Field name made lowercase.
+    isfinal = models.NullBooleanField(db_column='IsFinal', verbose_name="Окончательно")  # Field name made lowercase.
     subjectid = models.ForeignKey('Subject', models.DO_NOTHING, db_column='SubjectId', verbose_name="Предмет")  # Field name made lowercase.
     subjecttypeid = models.ForeignKey('Subjecttype', models.DO_NOTHING, db_column='SubjectTypeId', verbose_name="Тип предмета")  # Field name made lowercase.
     semesterid = models.ForeignKey('Semesters', models.DO_NOTHING, db_column='SemesterId', verbose_name="Семестр")  # Field name made lowercase.
@@ -251,6 +271,18 @@ class Schedule(models.Model):
         db_table = 'Schedule'
         verbose_name = "Расписание"
         verbose_name_plural = "Расписание"
+
+
+class Scheduleweeks(models.Model):
+    id = models.BigAutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    scheduleid = models.ForeignKey(Schedule, models.DO_NOTHING, db_column='ScheduleId', verbose_name="Расписание")  # Field name made lowercase.
+    weekid = models.ForeignKey('Week', models.DO_NOTHING, db_column='WeekId', verbose_name="Неделя")  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'ScheduleWeeks'
+        verbose_name = "Расписание, неделя"
+        verbose_name_plural = "Связь расписания с неделей"
 
 
 class Scheduleyears(models.Model):
@@ -267,6 +299,9 @@ class Scheduleyears(models.Model):
     subjecttypeid = models.ForeignKey('Subjecttype', models.DO_NOTHING, db_column='SubjectTypeId', verbose_name="Тип предмета")  # Field name made lowercase.
     semesterid = models.ForeignKey('Semesters', models.DO_NOTHING, db_column='SemesterId', verbose_name="Семестр")  # Field name made lowercase.
     yearid = models.ForeignKey('Years', models.DO_NOTHING, db_column='YearId', verbose_name="Год")  # Field name made lowercase.
+
+    def __str__(self):
+        return self.yearid + self.groupid + self.teacherid + self.subjectid + self.auditoriumid + self.dayofweekid + self.hourid
 
     class Meta:
         managed = False
@@ -302,9 +337,22 @@ class Subject(models.Model):
     class Meta:
         managed = False
         db_table = 'Subject'
-        ordering = ['name']
         verbose_name = "Предмет"
         verbose_name_plural = "Предметы"
+
+
+class Subjectclass(models.Model):
+    id = models.AutoField(db_column='Id', primary_key=True)  # Field name made lowercase.
+    name = models.CharField(db_column='Name', max_length=20, verbose_name="Название")  # Field name made lowercase.
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        managed = False
+        db_table = 'SubjectClass'
+        verbose_name = "Класс предмета"
+        verbose_name_plural = "КПВ и всякая хрень"
 
 
 class Subjectdepartment(models.Model):
@@ -319,7 +367,7 @@ class Subjectdepartment(models.Model):
         managed = False
         db_table = 'SubjectDepartment'
         verbose_name = "Предмет, кафедра"
-        verbose_name_plural = "Предмет, кафедра"
+        verbose_name_plural = "Связь предмета и кафедры"
 
 
 class Subjecttype(models.Model):
@@ -343,12 +391,17 @@ class Teacher(models.Model):
     lastname = models.CharField(db_column='LastName', max_length=30, blank=True, null=True, verbose_name="Имя")  # Field name made lowercase.
 
     def __str__(self):
-        return self.firstname + " " + self.lastname
+        name = ""
+        if self.firstname:
+            name += self.firstname + " "
+        if self.lastname:
+            name += self.lastname
+        return name
 
     class Meta:
         managed = False
         db_table = 'Teacher'
-        ordering = ['lastname']
+        ordering = ['lastname', ]
         verbose_name = "Преподаватель"
         verbose_name_plural = "Преподаватели"
 
@@ -364,8 +417,9 @@ class Teacherdepartment(models.Model):
     class Meta:
         managed = False
         db_table = 'TeacherDepartment'
+        ordering = ['departmentid', ]
         verbose_name = "Преподаватель, кафедра"
-        verbose_name_plural = "Преподаватель, кафедра"
+        verbose_name_plural = "Связь преподавателя с кафедрой"
 
 
 class Teacherpersonaltime(models.Model):
@@ -414,3 +468,37 @@ class Years(models.Model):
         db_table = 'Years'
         verbose_name = "Год"
         verbose_name_plural="Год"
+
+
+# def manage_books(request, id):
+#
+#     if id:
+#         author = Author.objects.get(pk=author_id)  # if this is an edit form, replace the author instance with the existing one
+#     else:
+#         author = Author()
+#     author_form = AuthorModelForm(instance=author) # setup a form for the parent
+#
+#     BookInlineFormSet = inlineformset_factory(Author, Book, fields=('title',))
+#     formset = BookInlineFormSet(instance=author)
+#
+#     if request.method == "POST":
+#         author_form = AuthorModelForm(request.POST)
+#
+#         if id:
+#             author_form = AuthorModelForm(request.POST, instance=author)
+#
+#         formset = BookInlineFormSet(request.POST, request.FILES)
+#
+#         if author_form.is_valid():
+#             created_author = author_form.save(commit=False)
+#             formset = BookInlineFormSet(request.POST, request.FILES, instance=created_author)
+#
+#             if formset.is_valid():
+#                 created_author.save()
+#                 formset.save()
+#                 return HttpResponseRedirect(created_author.get_absolute_url())
+#
+#     return render_to_response("manage_books.html", {
+#         "author_form": author_form,
+#         "formset": formset,
+#     })

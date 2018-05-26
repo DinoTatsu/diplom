@@ -1,15 +1,39 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
-from .forms import GroupSearchForm, ScheduleForm
-from .models import Raschasovka, Teacher, Department, Group, Teacherdepartment, Schedule, Subject, Subjecttype, Faculty, Hour, Week, Dayofweek
+from .forms import GroupSearchForm, ScheduleForm, ScheduleCreateByRForm
+from .models import Raschasovka, Teacher, Department, Group, Teacherdepartment, Schedule, Subject, Subjecttype, Faculty, \
+    Hour, Week, Dayofweek
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+# создать расписание по расчасовке
+# брать поля из расчасовки
+def schedule_by_r_create(request, group_id, raschasovka_id):
+    raschasovka = Raschasovka.objects.get(id=raschasovka_id)
+    initial = {
+        'groupid': group_id,
+        'teacherid': raschasovka.teacherid,
+        'subjectid': raschasovka.subjectid,
+        'subjecttypeid': raschasovka.subjecttypeid,
+        'auditoriumid': raschasovka.auditoriumid,
+        'semesterid': raschasovka.semesterid,
+    }
+    form = ScheduleCreateByRForm(request.POST or None, initial=initial)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect( reverse( 'group', args=(group_id,) ) )
+    else:
+        print(form.errors)
+    context = {
+        'form': form,
+        'group': Group.objects.get(id=group_id)
+    }
+    return render(request, 'schedule_form.html', context)
 
 
 def schedule_create(request, group_id):
     initial = {
         'groupid': group_id,
-        'weekid': Week.objects.get(number=1),
     }
     form = ScheduleForm(request.POST or None, initial=initial)
     if form.is_valid():
@@ -70,12 +94,19 @@ def group(request, group_id):
                 schedule_table[hour][day] = schedule
             else:
                 schedule_table[hour][day] = ""
+
+    raschasovka_for_group = Raschasovka.objects.filter(groupid=group_id)
+    for schedule in schedule_list:
+        raschasovka_for_group = raschasovka_for_group.exclude(subjectid_id=schedule.subjectid,
+                                                          subjecttypeid_id=schedule.subjecttypeid,
+                                                          teacherid_id=schedule.teacherid)
     context = {
         'group': group,
         'schedule_list': schedule_list,
         'hours': hours,
         'days_of_week': days_of_week,
         'schedule_table': schedule_table,
+        'raschasovka_for_group': raschasovka_for_group,
     }
     return render(request, 'group_schedule.html', context)
 
@@ -83,7 +114,7 @@ def group(request, group_id):
 # список всех групп
 def group_list(request, department_id=None):
     departments = Department.objects.all().exclude(group=None)
-    groups = Group.objects.all()
+    groups = Group.objects.all().exclude(raschasovka__groupid=None)
 
     if department_id:
         groups = Group.objects.filter(departmentid=department_id)

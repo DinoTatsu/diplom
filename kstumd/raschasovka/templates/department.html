@@ -17,7 +17,7 @@
 <!-- Навигация -->
 
 {% block content %}
-	<div class="container-fluid pt-2">
+	<div class="container-fluid pt-2 white">
     <div class="row">
 
 	    <div class="col ">
@@ -29,44 +29,28 @@
 
       <div class="col-12">
         <!-- Таблица с расчасовкой !-->
-        <table class="table table-hover table-bordered raschasovka text-center">
+        <table class="table table-hover table-bordered raschasovka text-center z-depth-1">
           <thead>
             <tr>
-              <th rowspan="2">Номер потока</th>
-              <th rowspan="2">Курс</th>
-              <th rowspan="2">Группа</th>
-              <th rowspan="2">Количество студентов</th>
-              <th rowspan="2">Преподаватель</th>
-              <th rowspan="2">Дисциплина</th>
-              <th rowspan="2">Вид занятий</th>
-              <th rowspan="2">Аудитория</th>
-              <th rowspan="2">Количество часов за семестр</th>
-              <th colspan="16">График учебного процесса (Недели)</th>
-              <th rowspan="2" class="table-light"></th>
-            </tr>
-            <tr>
-              <th>№1</th>
-              <th>№2</th>
-              <th>№3</th>
-              <th>№4</th>
-              <th>№5</th>
-              <th>№6</th>
-              <th>№7</th>
-              <th>№8</th>
-              <th>№9</th>
-              <th>№10</th>
-              <th>№11</th>
-              <th>№12</th>
-              <th>№13</th>
-              <th>№14</th>
-              <th>№15</th>
-              <th>№16</th>
+              <th>Номер потока</th>
+              <th>Курс</th>
+              <th>Группа</th>
+              <th>Количество студентов</th>
+              <th>Преподаватель</th>
+              <th>Дисциплина</th>
+              <th>Вид занятий</th>
+              <th>Аудитория</th>
+              <th>Количество часов за семестр</th>
             </tr>
           </thead>
           <tbody>
           {% for r in raschas %}
-            <tr>
-              <td>{{ r.potok }}</td>
+            <tr onclick="location.href='{% url "raschasovka_edit" department.id r.id %}'">
+              <td>
+	              {% if r.potok %}
+	                {{ r.potok }}
+	              {% endif %}
+              </td>
               <td>{{ r.courseid.number }}</td>
               <td>{{ r.groupid.name }}</td>
               <td>{{ r.numberofstudents }}</td>
@@ -75,28 +59,6 @@
               <td>{{ r.subjecttypeid.fullname }}</td>
               <td>{{ r.auditoriumid.name }}</td>
               <td>{{ r.totalhoursforsemestr }}</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-              <td>2</td>
-	            <td><a href="{% url "raschasovka_edit" department.id r.id %}" class="btn btn-sm btn-outline-blue" role="button"> Редактировать </a></td>
-	            <td><a href="{% url "raschasovka_delete" department.id r.id %}" class="btn btn-sm btn-outline-danger" role="button"> Удалить </a></td>
-{#              <!-- Удалятор -->#}
-{#              <td class="table-light">#}
-{#                <button type="button" class="btn btn-outline-danger btn-sm" type="submit" value="Submit">Удалить</button>#}
-{#              </td>#}
             </tr>
           {% endfor %}
           </tbody>

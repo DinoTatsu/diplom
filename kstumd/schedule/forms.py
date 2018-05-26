@@ -2,7 +2,7 @@ from django.forms import ModelForm, Form, CharField
 from django import forms
 from django.core.urlresolvers import reverse_lazy as _
 from .models import Raschasovka, Raschasovkaweeks, Group, \
-    Department, Teacherdepartment, Subjectdepartment, Teacher, Subject, Schedule, Week
+    Department, Teacherdepartment, Subjectdepartment, Teacher, Subject, Schedule, Week, Subjecttype
 
 
 class ScheduleForm(ModelForm):
@@ -13,14 +13,16 @@ class ScheduleForm(ModelForm):
             group_id = self.instance.groupid
         except:
             group_id = self.initial['groupid']
-        self.fields['teacherid'].queryset = Teacher.objects.all().filter(raschasovka__groupid=group_id)
-        self.fields['subjectid'].queryset = Subject.objects.all().filter(raschasovka__groupid=group_id)
+        Teachers = Teacher.objects.all().filter(raschasovka__groupid=group_id).order_by('firstname').distinct()
+        self.fields['teacherid'].queryset = Teachers
+        self.fields['subjectid'].queryset = Subject.objects.all().filter(raschasovka__groupid=group_id).order_by('fullname').distinct()
+        self.fields['subjecttypeid'].queryset = Subjecttype.objects.all().filter(raschasovka__groupid=group_id).order_by('fullname').distinct()
 
     class Meta:
         model = Schedule
         fields = [
             'hourid', 'dayofweekid', 'groupid', 'teacherid', 'auditoriumid',
-            'weekid', 'subjectid', 'subjecttypeid', 'semesterid', 'lastchange', 'isfinal'
+            'subjectid', 'subjecttypeid', 'semesterid', 'lastchange', 'isfinal'
         ]
 
         widgets = {
@@ -33,18 +35,25 @@ class ScheduleForm(ModelForm):
             'subjecttypeid': forms.Select(attrs={'class': 'form-control'}),
             'semesterid': forms.Select(attrs={'class': 'form-control'}),
             # 'weekid': forms.Select( attrs={'class': 'form-control'} ),
-            'weekid': forms.HiddenInput(),
             'groupid': forms.HiddenInput(),
             'lastchange': forms.HiddenInput(),
         }
 
-    def save(self, commit=True):
-        schedule = super(ScheduleForm, self).save(commit=False)
-        # magic
-        commit = True
-        if commit:
-            schedule.save()
-        return schedule
+
+class ScheduleCreateByRForm( ScheduleForm ):
+
+    def __init__(self, *args, **kwargs):
+        super( ScheduleForm, self ).__init__( *args, **kwargs )
+        try:
+            group_id = self.instance.groupid
+        except:
+            group_id = self.initial['groupid']
+        if not self.initial['teacherid']:
+            self.fields['teacherid'].queryset = Teacher.objects.all().filter( raschasovka__groupid=group_id )
+        if not self.initial['subjectid']:
+            self.fields['subjectid'].queryset = Subject.objects.all().filter( raschasovka__groupid=group_id )
+        if not self.initial['subjecttypeid']:
+            self.fields['subjecttypeid'].queryset = Subjecttype.objects.all().filter( raschasovka__groupid=group_id )
 
 
 class GroupSearchForm(Form):
