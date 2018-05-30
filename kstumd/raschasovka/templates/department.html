@@ -17,7 +17,7 @@
 <!-- Навигация -->
 
 {% block content %}
-	<div class="container-fluid pt-2 white">
+	<div class="container-fluid pt-2 pb-3 white">
     <div class="row">
 
 	    <div class="col ">
@@ -29,7 +29,8 @@
 
       <div class="col-12">
         <!-- Таблица с расчасовкой !-->
-        <table class="table table-hover table-bordered raschasovka text-center z-depth-1">
+        {% if department.raschasovka_set.exists %}
+        <table class="table table-hover table-bordered raschasovka text-center z-depth-1-half">
           <thead>
             <tr>
               <th>Номер потока</th>
@@ -63,6 +64,12 @@
           {% endfor %}
           </tbody>
         </table>
+
+	        {% else %}
+	        <div class="card z-depth-2">
+	          <h2>Нет введенных расчасовок</h2>
+	        </div>
+        {% endif %}
 
       </div>
     </div>

@@ -23,7 +23,11 @@ def raschasovka_create(request, department_id):
     if form.is_valid():
         raschasovka = form.save()
         return HttpResponseRedirect(reverse('week_raschasovka', args=(department_id, raschasovka.id)))
-    return render(request, 'raschasovka_form.html', {'form': form})
+    context = {
+        'form': form,
+        'department': Department.objects.get(id=department_id),
+    }
+    return render(request, 'raschasovka_form.html', context)
 
 def week_for_raschasovka(request, department_id, raschasovka_id):
     raschasovka = Raschasovka.objects.get(id=raschasovka_id)
@@ -40,7 +44,7 @@ def raschasovka_update(request, raschasovka_id, department_id):
     context = {
         'form': form,
         'raschasovka': raschasovka,
-        'department_id': department_id,
+        'department': Department.objects.get(id=department_id),
     }
     if form.is_valid():
         form.save()
@@ -67,10 +71,9 @@ def raschasovka_department(request, department_id=1):
 
 
 def department_list(request):
-    departments = Department.objects.all() # .order_by('name')
-    for department in departments:
-        if not department.teacherdepartment_set.first():
-            departments.exclude(id=department.id)
+    departments = Department.objects.all()
+    # исключить кафедры без преподавателей
+    departments = departments.exclude(teacherdepartment__teacherid_id__isnull=True)
 
     form = DepartmentSearchForm( request.GET )  # создать форму для поиска кафедры
     form.is_valid()

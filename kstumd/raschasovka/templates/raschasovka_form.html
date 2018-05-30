@@ -20,12 +20,13 @@
 	<div class="container pb-2">
 		<div class="row pb-2 mb-2 pt-1">
 			<div class="col-2"></div>
-			<div class="col-6 pt-2 mb-2 ml-5 white z-depth-2">
+			<div class="col-6 p-2 m-2 ml-5 white z-depth-2">
 				<table>
 					<tr>
-						<td>Кафедра:</td>
-						<td>{{ raschasovka.departmentid.fullname }}</td>
+						<td><h3>Кафедра:</h3></td>
+						<td><h3>{{ department.fullname }}</h3></td>
 					</tr>
+					{% if raschasovka %}
 					<tr>
 						<td>Группа:</td>
 						<td>{{ raschasovka.groupid.name }}</td>
@@ -38,10 +39,15 @@
 						<td>Тип учебного занятия:</td>
 						<td>{{ raschasovka.subjecttypeid }}</td>
 					</tr>
+					<tr>
+						<td>Преподаватель:</td>
+						<td>{{ raschasovka.teacherid }}</td>
+					</tr>
+					{% endif %}
 
 				</table>
 				{% if raschasovka %}
-					<a href="{% url "raschasovka_delete" department_id raschasovka.id %}" class="btn btn-sm btn-outline-danger" role="button">
+					<a href="{% url "raschasovka_delete" department.id raschasovka.id %}" class="btn btn-sm btn-outline-danger" role="button">
 						Удалить данную расчасовку
 					</a>
 				{% endif %}

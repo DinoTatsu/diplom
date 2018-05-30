@@ -19,12 +19,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'^$', include('main.urls')),
+
     url(r'^schedule/', include('schedule.urls')),
 
     url(r'^raschasovka/', include('raschasovka.urls')),
     url(r'^auditorium/', include('auditorium.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^$', include('main.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
