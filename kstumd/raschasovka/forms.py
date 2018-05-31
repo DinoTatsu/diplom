@@ -11,6 +11,11 @@ RaschasovkaWeekFormSet = inlineformset_factory(parent_model=Raschasovka,
                                                fields=('raschasovkaid', 'weekid', 'hoursforweek',),
                                                extra=amount_of_weeks)
 
+class WeekForm(Form):
+    chislitel = forms.BooleanField()
+    znamenatel = forms.BooleanField()
+    all = forms.BooleanField()
+
 
 class RaschasovkaForm(ModelForm):
 

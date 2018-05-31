@@ -19,6 +19,7 @@ class Auditorium(models.Model):
     class Meta:
         managed = False
         db_table = 'Auditorium'
+        ordering = ['name']
         verbose_name = "Аудитория"
         verbose_name_plural = "Аудитории"
 
@@ -337,6 +338,7 @@ class Subject(models.Model):
     class Meta:
         managed = False
         db_table = 'Subject'
+        ordering = ['name', 'fullname']
         verbose_name = "Предмет"
         verbose_name_plural = "Предметы"
 
@@ -401,7 +403,7 @@ class Teacher(models.Model):
     class Meta:
         managed = False
         db_table = 'Teacher'
-        ordering = ['lastname', ]
+        ordering = ['firstname', ]
         verbose_name = "Преподаватель"
         verbose_name_plural = "Преподаватели"
 

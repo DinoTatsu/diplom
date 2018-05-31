@@ -4,27 +4,21 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
 
-from .forms import DepartmentSearchForm, RaschasovkaForm, RaschasovkaWeekFormSet
+from .forms import DepartmentSearchForm, RaschasovkaForm, RaschasovkaWeekFormSet, WeekForm
 from .models import Raschasovka, Teacher, Department, Group, Teacherdepartment, Week, Raschasovkaweeks, amount_of_weeks
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
-def index(request):
-    raschasovka = Raschasovka.objects.first()
-    formset = RaschasovkaWeekFormSet(instance=raschasovka)
-    if formset.is_valid():
-        formset.save()
-        return redirect( department_list )
-    return render( request, 'index.html', {'formset': formset} )
-
-
 def raschasovka_create(request, department_id):
     form = RaschasovkaForm(request.POST or None, initial={'departmentid': department_id})
+    form_w = WeekForm(request.POST or None)
     if form.is_valid():
         raschasovka = form.save()
+
         return HttpResponseRedirect(reverse('week_raschasovka', args=(department_id, raschasovka.id)))
     context = {
         'form': form,
+        'form_w': form_w,
         'department': Department.objects.get(id=department_id),
     }
     return render(request, 'raschasovka_form.html', context)

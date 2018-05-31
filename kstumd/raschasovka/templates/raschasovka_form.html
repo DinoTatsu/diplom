@@ -59,6 +59,21 @@
 				<form method="post">
 					{% csrf_token %}
 						{{ form.as_p }}
+{#					<div class="btn-group" data-toggle="grey">#}
+{#					  <label class="btn btn-grey">#}
+{#					    {{ form_w.chislitel }}#}
+{#						  Числитель#}
+{#					  </label>#}
+{#					  <label class="btn btn-grey">#}
+{#					    {{ form_w.znamenatel }}#}
+{#						  Знаменатель#}
+{#					  </label>#}
+{#					  <label class="btn btn-dark">#}
+{#					    {{ form_w.all }}#}
+{#						  Все#}
+{#					  </label>#}
+{#					</div>#}
+					<br>
 					<button type="submit" class="btn btn-info">Сохранить</button>
 				</form>
 
